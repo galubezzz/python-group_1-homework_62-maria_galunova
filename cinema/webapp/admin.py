@@ -1,4 +1,5 @@
 from django.contrib import admin
+from webapp.models import Movie
 
 # Register your models here.
 class MovieAdmin(admin.ModelAdmin):
