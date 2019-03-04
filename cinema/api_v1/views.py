@@ -23,6 +23,6 @@ class HallViewSet(viewsets.ModelViewSet):
     queryset = Hall.objects.all().order_by("name")
     serializer_class = HallSerializer
 
-class SetViewSet(viewsets.ModelViewSet):
+class SeatViewSet(viewsets.ModelViewSet):
     queryset = Seat.objects.all().order_by("hall")
     serializer_class = SeatSerializer
