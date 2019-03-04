@@ -14,7 +14,7 @@ class Movie(models.Model):
     poster = models.ImageField(upload_to='posters', null=True, blank=True, verbose_name='Постер')
     release_date = models.DateField(verbose_name='Дата релиза')
     finish_date = models.DateField(null=True, blank=True, verbose_name='Дата окончания показа')
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.PROTECT, related_name="movie_in_category", verbose_name='Категория')
+    category = models.ManyToManyField(Category, null=True, blank=True, related_name="movie_in_category", verbose_name='Категория')
 
     def __str__(self):
         return self.name
@@ -31,7 +31,7 @@ class Seat(models.Model):
     seat = models.IntegerField(verbose_name='Место')
 
     def __str__(self):
-        return self.seat
+        return str(self.seat)
 
 class Show(models.Model):
     name = models.ForeignKey(Movie, on_delete=models.PROTECT, related_name="show", verbose_name='Фильм')
@@ -41,4 +41,4 @@ class Show(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
 
     def __str__(self):
-        return self.name
+        return str(self.name)
