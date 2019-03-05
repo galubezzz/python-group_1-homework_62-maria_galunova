@@ -7,9 +7,15 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'poster', 'release_date', 'finish_date')
 
 class CategorySerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='api_v1:category-detail')
     class Meta:
         model = Category
         fields= ("id", "name", "description")
+
+class InlineCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name')
 
 class ShowSerializer(serializers.ModelSerializer):
     class Meta:
