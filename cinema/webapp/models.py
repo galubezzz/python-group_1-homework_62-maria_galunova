@@ -57,7 +57,7 @@ class Discount(models.Model):
 class Ticket(models.Model):
     show = models.ForeignKey(Show, on_delete=models.PROTECT, related_name="tickets_for_show", verbose_name="Сеанс")
     seat = models.ForeignKey(Seat, on_delete=models.PROTECT, related_name="tickets_for_seat", verbose_name="Место")
-    discount = models.ForeignKey(Discount, on_delete=models.PROTECT, related_name="discounted_tickets", verbose_name="Скидка")
+    discount = models.ForeignKey(Discount, null=True, blank=True, on_delete=models.PROTECT, related_name="discounted_tickets", verbose_name="Скидка")
     exchange = models.BooleanField(verbose_name="Возврат")
 
 class Booking(models.Model):

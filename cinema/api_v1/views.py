@@ -15,7 +15,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class ShowViewSet(viewsets.ModelViewSet):
-    queryset = Show.objects.all().order_by("movie")
+    queryset = Show.objects.all().order_by("name")
     serializer_class = ShowSerializer
 
 

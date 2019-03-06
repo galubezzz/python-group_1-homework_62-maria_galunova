@@ -28,17 +28,17 @@ class MovieSerializer(serializers.ModelSerializer):
 class InlineSeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
-        fields = ('id', 'row', 'seat')
+        fields = ("url", 'id', 'row', 'seat')
 
 
 class ShowSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api_v1:show-detail')
-    movie_url = serializers.HyperlinkedRelatedField(view_name='api_v1:movie-detail', read_only=True, source='movie')
+    movie_url = serializers.HyperlinkedRelatedField(view_name='api_v1:movie-detail', read_only=True, source='name')
     hall_url = serializers.HyperlinkedRelatedField(view_name='api_v1:hall-detail', read_only=True, source='hall')
 
     class Meta:
         model = Show
-        fields = ("id", "name", "hall", "start_time", "end_time", "price", "hall_url", "movie_url")
+        fields = ("url", "id", "hall", "start_time", "end_time", "price", "hall_url", "movie_url")
 
 
 class HallSerializer(serializers.ModelSerializer):
@@ -47,7 +47,7 @@ class HallSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Hall
-        fields = ("id", "name", "seats")
+        fields = ("url", "id", "name", "seats")
 
 
 class SeatSerializer(serializers.ModelSerializer):
@@ -56,7 +56,7 @@ class SeatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Seat
-        fields = ("url, ""id", "hall", "row", "seat", "hall_url")
+        fields = ("url", "id", "hall", "row", "seat", "hall_url")
 
 
 class DiscountSerializer(serializers.ModelSerializer):
