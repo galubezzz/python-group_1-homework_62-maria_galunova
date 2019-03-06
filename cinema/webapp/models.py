@@ -14,7 +14,7 @@ class Movie(models.Model):
     poster = models.ImageField(upload_to='posters', null=True, blank=True, verbose_name='Постер')
     release_date = models.DateField(verbose_name='Дата релиза')
     finish_date = models.DateField(null=True, blank=True, verbose_name='Дата окончания показа')
-    category = models.ManyToManyField(Category, null=True, blank=True, related_name="movie_in_category", verbose_name='Категория')
+    category = models.ManyToManyField(Category, blank=True, related_name="movie_in_category", verbose_name='Категория')
 
     def __str__(self):
         return self.name
@@ -42,3 +42,14 @@ class Show(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+class Discount(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Название')
+    discount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Скидка')
+    start_date = models.DateField(null=True, blank=True, verbose_name='Дата начала')
+    end_date = models.DateField(null=True, blank=True, verbose_name='Дата окончания')
+
+    def __str__(self):
+        return self.name
+
