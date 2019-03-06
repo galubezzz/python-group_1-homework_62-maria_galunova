@@ -69,9 +69,9 @@ class DiscountSerializer(serializers.ModelSerializer):
 
 class TicketSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="api_v1:ticket-detail")
-    show = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True, source="show")
-    seat = serializers.HyperlinkedRelatedField(view_name="api_v1:seat-detail", read_only=True, source="seat")
-    discount = serializers.HyperlinkedRelatedField(view_name="api_v1:discount-detail", read_only=True, source="discount")
+    show = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True)
+    seat = serializers.HyperlinkedRelatedField(view_name="api_v1:seat-detail", read_only=True)
+    discount = serializers.HyperlinkedRelatedField(view_name="api_v1:discount-detail", read_only=True)
 
     class Meta:
         model = Ticket
@@ -80,7 +80,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
 class BookingSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="api_v1:booking-detail")
-    show = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True, source="show")
+    show = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True)
     seats = SeatSerializer(many=True)
 
     class Meta:
