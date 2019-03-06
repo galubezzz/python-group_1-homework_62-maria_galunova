@@ -32,4 +32,7 @@ class SeatViewSet(viewsets.ModelViewSet):
 class DiscountViewSet(viewsets.ModelViewSet):
     queryset = Discount.objects.all().order_by("name")
     serializer_class = DiscountSerializer
-   
+
+class TicketViewSet(viewsets.ModelViewSet):
+    queryset = Ticket.objects.all().order_by("show")
+    serializer_class = TicketSerializer
