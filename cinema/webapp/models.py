@@ -53,3 +53,26 @@ class Discount(models.Model):
     def __str__(self):
         return self.name
 
+
+class Ticket(models.Model):
+    show = models.ForeignKey(Show, on_delete=models.PROTECT, related_name="tickets_for_show", verbose_name="Сеанс")
+    seat = models.ForeignKey(Seat, on_delete=models.PROTECT, related_name="tickets_for_seat", verbose_name="Место")
+    discount = models.ForeignKey(Discount, on_delete=models.PROTECT, related_name="discounted_tickets", verbose_name="Скидка")
+    exchange = models.BooleanField(verbose_name="Возврат")
+
+class Booking(models.Model):
+    STATUS_1 = 'created'
+    STATUS_2 = 'paid'
+    STATUS_3 = 'cancel'
+
+    STATUS_CHOICES = (
+        (STATUS_1, 'Создано'),
+        (STATUS_2, 'Выкуплено'),
+        (STATUS_3, 'Отмена')
+    )
+    code = models.CharField(unique=True, max_length=255, verbose_name='Код')
+    show = models.ForeignKey(Show, on_delete=models.PROTECT, related_name="bookings_for_show", verbose_name="Сеанс")
+    seats = models.ManyToManyField(Seat, blank=False, related_name="seats", verbose_name="Места")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, verbose_name='Статус')
+    created_date = models.DateField(null=True, blank=True, verbose_name='Дата создания')
+    renew_date = models.DateField(null=True, blank=True, verbose_name='Дата обновления')
