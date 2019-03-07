@@ -2,6 +2,40 @@ from webapp.models import Movie, Category, Show, Hall, Seat, Discount, Ticket, B
 from rest_framework import serializers
 
 
+class InlineCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name')
+
+
+class InlineSeatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seat
+        fields = ('id', 'row', 'seat', "hall")
+
+
+class InlineHallSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hall
+        fields = ('id', 'name')
+
+
+class InlineMovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ('id', 'name')
+
+class InlineShowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Show
+        fields = ("id", "name", "start_time")
+
+class InlineDiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = ("id", "name")
+
+
 class CategorySerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api_v1:category-detail')
 
@@ -10,35 +44,13 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("url", "id", "name", "description")
 
 
-class InlineCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('id', 'name')
-
-
 class MovieSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api_v1:movie-detail')
-    category = CategorySerializer(many=True)
+    category = InlineCategorySerializer(many=True)
+
     class Meta:
         model = Movie
         fields = ('url', 'id', 'name', 'description', 'poster', 'release_date', 'finish_date', 'category')
-
-
-
-class InlineSeatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Seat
-        fields = ("url", 'id', 'row', 'seat')
-
-
-class ShowSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='api_v1:show-detail')
-    movie_url = serializers.HyperlinkedRelatedField(view_name='api_v1:movie-detail', read_only=True, source='name')
-    hall_url = serializers.HyperlinkedRelatedField(view_name='api_v1:hall-detail', read_only=True, source='hall')
-
-    class Meta:
-        model = Show
-        fields = ("url", "id", "hall", "start_time", "end_time", "price", "hall_url", "movie_url")
 
 
 class HallSerializer(serializers.ModelSerializer):
@@ -50,9 +62,22 @@ class HallSerializer(serializers.ModelSerializer):
         fields = ("url", "id", "name", "seats")
 
 
+class ShowSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='api_v1:show-detail')
+    movie_url = serializers.HyperlinkedRelatedField(view_name='api_v1:movie-detail', read_only=True, source='name')
+    hall_url = serializers.HyperlinkedRelatedField(view_name='api_v1:hall-detail', read_only=True, source='hall')
+    name = InlineMovieSerializer()
+    hall = InlineHallSerializer()
+
+    class Meta:
+        model = Show
+        fields = ("url", "id", "hall", "name", "start_time", "end_time", "price", "hall_url", "movie_url")
+
+
 class SeatSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api_v1:seat-detail')
     hall_url = serializers.HyperlinkedRelatedField(view_name='api_v1:hall-detail', read_only=True, source='hall')
+    hall = InlineHallSerializer()
 
     class Meta:
         model = Seat
@@ -69,20 +94,24 @@ class DiscountSerializer(serializers.ModelSerializer):
 
 class TicketSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="api_v1:ticket-detail")
-    show = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True)
-    seat = serializers.HyperlinkedRelatedField(view_name="api_v1:seat-detail", read_only=True)
-    discount = serializers.HyperlinkedRelatedField(view_name="api_v1:discount-detail", read_only=True)
+    show_url = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True, source="show")
+    seat_url = serializers.HyperlinkedRelatedField(view_name="api_v1:seat-detail", read_only=True, source="seat")
+    discount_url = serializers.HyperlinkedRelatedField(view_name="api_v1:discount-detail", read_only=True, source="discount")
+    show = InlineShowSerializer()
+    seat = InlineSeatSerializer()
+    discount = InlineDiscountSerializer()
 
     class Meta:
         model = Ticket
-        fields = ("url", "id", "show", "seat", "discount")
+        fields = ("url", "id", "show_url", "show", "seat_url", "seat", "discount_url", "discount")
 
 
 class BookingSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="api_v1:booking-detail")
-    show = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True)
-    seats = SeatSerializer(many=True)
+    show_url = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True)
+    show = InlineShowSerializer()
+    seats = InlineSeatSerializer(many=True)
 
     class Meta:
         model = Booking
-        fields = ("url", "id", "code", "show", "seats", "status", "created_date", "renew_date")
+        fields = ("url", "id", "code", "show_url", "show", "seats", "status", "created_date", "renew_date")
