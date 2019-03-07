@@ -79,7 +79,7 @@ class Discount(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название')
     discount = models.DecimalField(max_digits=5, decimal_places=2, validators=[
         MaxValueValidator(100),
-        MinValueValidator(1)
+        MinValueValidator(0)
     ], verbose_name='Скидка')
     start_date = models.DateField(null=True, blank=True, verbose_name='Дата начала')
     end_date = models.DateField(null=True, blank=True, verbose_name='Дата окончания')
