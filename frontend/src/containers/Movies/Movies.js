@@ -1,6 +1,7 @@
 import React, {Fragment, Component} from 'react'
 import {NavLink} from "react-router-dom";
 import axios from 'axios';
+import Movie from "../../components/Movie/Movie";
 
 
 // компонент для показа списка фильмов клиенту
@@ -24,8 +25,8 @@ class Movies extends Component {
             <p><NavLink to='/movies/add'>Добавить фильм</NavLink></p>
             <div className='row'>
                 {this.state.movies.map(movie => {
-                    return <div className='col-xs-12 col-sm-6 col-lg-4 mt-3'  key={movie.id}>
-                        <div>{movie.name} {movie.description}</div>
+                    return <div key={movie.id}>
+                        <Movie movie={movie} />
                     </div>
                 })}
             </div>
