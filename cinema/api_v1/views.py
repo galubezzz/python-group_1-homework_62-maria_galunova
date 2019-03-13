@@ -4,8 +4,12 @@ from api_v1.serializers import MovieSerializer, CategorySerializer, ShowSerializ
     DiscountSerializer, TicketSerializer, BookingSerializer
 
 
-class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all().order_by('-release_date')
+class NoAuthModelViewSet(viewsets.ModelViewSet):
+    authentication_classes = []
+
+
+class MovieViewSet(NoAuthModelViewSet):
+    queryset = Movie.objects.active().order_by('-release_date')
     serializer_class = MovieSerializer
 
     def perform_destroy(self, instance):
