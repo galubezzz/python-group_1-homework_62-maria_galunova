@@ -14,6 +14,10 @@ class Movies extends Component {
     };
 
     componentDidMount() {
+        this.getMovies();
+    }
+
+    getMovies(){
         axios.get(MOVIES_URL)
             .then(response => {console.log(response.data); return response.data;})
             .then(movies => this.setState({movies}))
@@ -26,7 +30,7 @@ class Movies extends Component {
             <div className='row'>
                 {this.state.movies.map(movie => {
                     return <div key={movie.id}>
-                        <Movie movie={movie} />
+                        <Movie movie={movie} updateBoard={this.getMovies.bind(this)}/>
                     </div>
                 })}
             </div>
