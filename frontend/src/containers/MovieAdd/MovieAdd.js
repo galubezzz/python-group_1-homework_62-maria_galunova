@@ -51,7 +51,7 @@ class MovieAdd extends Component {
                 const movie = response.data;
                 // если всё успешно, переходим на просмотр страницы фильма с id,
                 // указанным в ответе
-                this.props.history.replace('/movies/' + movie.id);
+                this.props.history.replace('/movie/' + movie.id);
             })
             .catch(error => {
                 console.log(error);

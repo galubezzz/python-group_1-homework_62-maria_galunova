@@ -20,7 +20,8 @@ class Movie extends Component {
         const link = "/movie/" + this.props.movie.id;
         const edit_link = "/movie/edit/" + this.props.movie.id;
         return (
-            <div className="card mb-4">
+            <div className="card m-4" style={{"width": "18rem"}}>
+                <img src={this.props.movie.poster} className="card-img-top" alt="..."/>
                 <div className="card-body">
                     <h5 className="card-title">{this.props.movie.name}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">{this.props.movie.release_date}</h6>

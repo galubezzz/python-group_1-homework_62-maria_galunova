@@ -28,11 +28,14 @@ class MovieDetails extends Component {
 
         if (!this.state.movie) return null;
         return (
-            <div className="card">
+            <div className="card" style={{"width": "30rem"}}>
+                <img src={this.state.movie.poster} className="card-img-top" alt="..."/>
                 <div className="card-body">
                     <h5 className="card-title">{this.state.movie.name}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">{this.state.movie.release_date}</h6>
+                    <h6 className="card-subtitle mb-2 text-muted">Дата начала показа: {this.state.movie.release_date}</h6>
+                    <h6 className="card-subtitle mb-2 text-muted">Дата окончания показа: {this.state.movie.finish_date}</h6>
                     <p className="card-text">Описание: {this.state.movie.description}</p>
+                    <p className="card-text">Жанр: {this.state.movie.сategory}</p>
                     <NavLink className="nav-link" to="/">К списку фильмов</NavLink>
                 </div>
             </div>
