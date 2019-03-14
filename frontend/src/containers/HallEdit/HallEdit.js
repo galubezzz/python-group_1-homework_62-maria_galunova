@@ -47,11 +47,12 @@ class HallAdd extends Component {
             return newState;
         });
         const HALLS_URL = 'http://localhost:8000/api/v1/hall/';
+        const match = this.props.match;
         // отправка запроса
-        axios.post(HALLS_URL, this.state.hall)
+        axios.put(HALLS_URL + match.params.id + '/', this.state.hall)
             .then(response => {
                 console.log(response.data);
-                if (response.status === 201) return response.data;
+                if (response.status === 200) return response.data;
                 throw new Error('Hall was not added!');
             })
             // если всё успешно, переходим на просмотр страницы фильма с id,
@@ -67,6 +68,22 @@ class HallAdd extends Component {
                 });
             });
     };
+
+     componentDidMount() {
+        // match - атрибут, передаваемый роутером, содержащий путь к этому компоненту
+        const match = this.props.match;
+        const HALL_URL = 'http://localhost:8000/api/v1/hall/';
+
+        // match.params - переменные из пути (:id)
+        // match.params.id - значение переменной, обозначенной :id в свойстве path Route-а.
+        axios.get(HALL_URL + match.params.id)
+            .then(response => {
+                console.log(response.data);
+                return response.data;
+            })
+            .then(hall => this.setState({hall: hall}))
+            .catch(error => console.log(error));
+    }
 
     render() {
         // распаковка данных фильма, чтобы было удобнее к ним обращаться

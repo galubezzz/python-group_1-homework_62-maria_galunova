@@ -8,6 +8,7 @@ import MovieAdd from "./containers/MovieAdd/MovieAdd"
 import Halls from "./containers/Halls/Halls"
 import HallDetails from "./containers/HallDetails/HallDetails"
 import HallAdd from "./containers/HallAdd/HallAdd"
+import HallEdit from "./containers/HallEdit/HallEdit"
 import './App.css';
 
 class App extends Component {
@@ -18,8 +19,9 @@ class App extends Component {
                 <BrowserRouter>
                     <Switch>
                             <Route exact path="/halls/" component={Halls}/>
-                            <Route path="/halls/add" component={HallAdd}/>
-                            <Route path="/halls/:id" component={HallDetails}/>
+                            <Route exact path="/halls/add" component={HallAdd}/>
+                            <Route exact path="/halls/:id" component={HallDetails}/>
+                            <Route exact path="/halls/edit/:id" component={HallEdit}/>
                             <Route exact path="/" component={Movies}/>
                             <Route exact path="/movie/add" component={MovieAdd}/>
                             <Route exact path="/movie/:id" component={MovieDetails}/>
