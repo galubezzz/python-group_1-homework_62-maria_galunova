@@ -1,7 +1,6 @@
 import React, {Fragment, Component} from 'react'
 import {NavLink} from "react-router-dom";
 import axios from 'axios';
-import Movie from "../../components/Movie/Movie";
 import Hall from "../../components/Hall/Hall";
 
 

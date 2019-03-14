@@ -17,8 +17,8 @@ class Hall extends Component {
     }
 
     render() {
-        const link = "/hall/" + this.props.hall.id;
-        const edit_link = "/hall/edit/" + this.props.hall.id;
+        const link = "/halls/" + this.props.hall.id;
+        const edit_link = "/halls/edit/" + this.props.hall.id;
         return (
             <div className="card mb-4">
                 <div className="card-body">
