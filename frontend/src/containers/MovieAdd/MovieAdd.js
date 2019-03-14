@@ -41,7 +41,7 @@ class MovieAdd extends Component {
     formSubmitted = (movie) => {
         // сборка данных для запроса
         const formData = this.gatherFormData(movie);
-
+        console.log(movie);
         // отправка запроса
         return axios.post(MOVIES_URL, formData, {
             headers: {'Content-Type': 'multipart/form-data'}
@@ -49,7 +49,6 @@ class MovieAdd extends Component {
             .then(response => {
                 // при успешном создании response.data содержит данные фильма
                 const movie = response.data;
-                console.log(movie);
                 // если всё успешно, переходим на просмотр страницы фильма с id,
                 // указанным в ответе
                 this.props.history.replace('/movies/' + movie.id);

@@ -31,7 +31,7 @@ class HallDetails extends Component {
                 return response.data;
             })
             .then(shows =>
-            {   let showsInHall = shows.filter(show => show.hall.id == match.params.id);
+            {   let showsInHall = shows.filter(show => show.hall.id === match.params.id);
                 this.setState({shows: showsInHall})})
             .catch(error => console.log(error));
     }

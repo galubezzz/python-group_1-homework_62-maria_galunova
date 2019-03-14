@@ -17,7 +17,7 @@ class MovieViewSet(NoAuthModelViewSet):
         instance.save()
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(NoAuthModelViewSet):
     queryset = Category.objects.all().order_by("name")
     serializer_class = CategorySerializer
 

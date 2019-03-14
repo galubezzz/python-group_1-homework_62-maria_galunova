@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 
 // из библиотеки react-select
 import Select from 'react-select';
+
 const CATEGORIES_URL = 'http://localhost:8000/api/v1/category/';
 
 class MovieForm extends Component {
@@ -36,7 +37,7 @@ class MovieForm extends Component {
         };
 
         // если movie передан через props
-        if(this.props.movie) {
+        if (this.props.movie) {
             // браузер запрещает программно записывать в value полей типа "file"
             // что-либо, кроме пустой строки
             // поэтому ссылку на текущий постер храним в другом свойстве и отображаем рядом
@@ -57,12 +58,12 @@ class MovieForm extends Component {
         // загружаем категории
         axios.get(CATEGORIES_URL)
             .then(response => {
-                const categories = response.data;
-                console.log(categories);
+                const category = response.data;
+                console.log(category);
                 // и сохраняем их в state
                 this.setState(prevState => {
                     let newState = {...prevState};
-                    newState.category = categories;
+                    newState.category = category;
                     return newState;
                 });
             })
@@ -101,7 +102,7 @@ class MovieForm extends Component {
     };
 
     getCategoryValue = () => {
-        if(this.state.category.length > 0) {
+        if (this.state.category.length > 0) {
             return this.state.movie.category.map(id => {
                 const category = this.state.category.find(category => category.id === id);
                 return {value: id, label: category.name};
@@ -135,6 +136,7 @@ class MovieForm extends Component {
 
     // обработчик изменения select
     selectChanged = (field, values) => {
+        console.log(values);
         const category_ids = values.map(item => item.value);
         this.updateMovieState(field, category_ids);
     };
@@ -155,9 +157,10 @@ class MovieForm extends Component {
     // отправка формы
     // внутри вызывает onSubmit - переданное действие - со своим фильмом в качестве аргумента.
     submitForm = (event) => {
-        if(this.state.submitEnabled) {
+        if (this.state.submitEnabled) {
             event.preventDefault();
             this.disableSubmit();
+
             this.props.onSubmit(this.state.movie)
                 .then(this.enableSubmit);
         }
@@ -197,7 +200,8 @@ class MovieForm extends Component {
                     <div className="form-group">
                         <label className="font-weight-bold">Дата выхода</label>
                         <div>
-                            <DatePicker dateFormat="yyyy-MM-dd" selected={releaseDateSelected}
+                            <DatePicker dateFormat="yyyy-MM-dd HH:MM:ss" showTimeSelect timeFormat="HH:mm"
+                                        selected={releaseDateSelected}
                                         className="form-control"
                                         name="release_date"
                                         onChange={(date) => this.dateChanged('release_date', date)}/>
@@ -206,7 +210,8 @@ class MovieForm extends Component {
                     <div className="form-group">
                         <label>Дата завершения проката</label>
                         <div>
-                            <DatePicker dateFormat="yyyy-MM-dd" selected={finishDateSelected} className="form-control"
+                            <DatePicker dateFormat="yyyy-MM-dd HH:MM:ss" showTimeSelect timeFormat="HH:mm"
+                                        selected={finishDateSelected} className="form-control"
                                         name="finish_date" onChange={(date) => this.dateChanged('finish_date', date)}/>
                         </div>
                     </div>
@@ -219,8 +224,8 @@ class MovieForm extends Component {
                     </div>
                     <div className="form-group">
                         <label>Категории</label>
-                        <Select options={selectOptions} isMulti={true} name='categories' value={selectValue}
-                                onChange={(values) => this.selectChanged('categories', values)}/>
+                        <Select options={selectOptions} isMulti={true} name='category' value={selectValue}
+                                onChange={(values) => this.selectChanged('category', values)}/>
                     </div>
                     <button disabled={!submitEnabled} type="submit"
                             className="btn btn-primary">Сохранить
