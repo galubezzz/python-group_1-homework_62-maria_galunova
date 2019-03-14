@@ -2,6 +2,7 @@ import React, {Fragment, Component} from 'react'
 import {NavLink} from "react-router-dom";
 import axios from 'axios';
 import Movie from "../../components/Movie/Movie";
+import Hall from "../../components/Hall/Hall";
 
 
 // компонент для показа списка фильмов клиенту
@@ -14,10 +15,10 @@ class Halls extends Component {
     };
 
     componentDidMount() {
-        this.getMovies();
+        this.getHalls();
     }
 
-    getMovies(){
+    getHalls(){
         axios.get(HALLS_URL)
             .then(response => {console.log(response.data); return response.data;})
             .then(halls => this.setState({halls}))
@@ -30,7 +31,7 @@ class Halls extends Component {
             <div className='row'>
                 {this.state.halls.map(hall => {
                     return <div key={hall.id}>
-                            {hall.name}
+                            <Hall hall={hall} updateBoard={this.getHalls.bind(this)}/>
                     </div>
                 })}
             </div>
