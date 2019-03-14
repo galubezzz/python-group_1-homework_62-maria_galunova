@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {NavLink} from 'react-router-dom';
-import Hall from "../../components/Hall/Hall";
 
 class HallDetails extends Component {
 

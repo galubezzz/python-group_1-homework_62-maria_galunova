@@ -26,7 +26,7 @@ class Halls extends Component {
 
     render() {
         return <Fragment>
-            <p><NavLink to='/movie/add'>Добавить зал</NavLink></p>
+            <p><NavLink to='/halls/add'>Добавить зал</NavLink></p>
             <div className='row'>
                 {this.state.halls.map(hall => {
                     return <div key={hall.id}>
