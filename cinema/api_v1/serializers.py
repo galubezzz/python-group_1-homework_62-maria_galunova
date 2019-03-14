@@ -44,13 +44,18 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("url", "id", "name", "description")
 
 
-class MovieSerializer(serializers.ModelSerializer):
+class MovieCreateSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api_v1:movie-detail')
-    category = InlineCategorySerializer(many=True)
 
     class Meta:
         model = Movie
         fields = ('url', 'id', 'name', 'description', 'poster', 'release_date', 'finish_date', 'category')
+
+
+# Сериализатор для просмотра фильмов
+# выводит категории в виде списка вложенных объектов, представленных сериализатором InlineCategorySerializer.
+class MovieDisplaySerializer(MovieCreateSerializer):
+    category = InlineCategorySerializer(many=True, read_only=True)
 
 
 class HallSerializer(serializers.ModelSerializer):
