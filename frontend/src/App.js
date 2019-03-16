@@ -25,9 +25,9 @@ class App extends Component {
                             <Route exact path="/halls/:id" component={HallDetails}/>
                             <Route exact path="/halls/edit/:id" component={HallEdit}/>
                             <Route exact path="/" component={Movies}/>
-                            <Route exact path="/movie/add" component={MovieAdd}/>
-                            <Route exact path="/movie/:id" component={MovieDetails}/>
-                            <Route exact path="/movie/edit/:id" component={MovieEdit}/>
+                            <Route exact path="/movies/add" component={MovieAdd}/>
+                            <Route exact path="/movies/:id" component={MovieDetails}/>
+                            <Route exact path="/movies/edit/:id" component={MovieEdit}/>
                         </Switch>
                     </Layout>
                 </BrowserRouter>

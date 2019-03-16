@@ -17,8 +17,8 @@ class Movie extends Component {
     }
 
     render() {
-        const link = "/movie/" + this.props.movie.id;
-        const edit_link = "/movie/edit/" + this.props.movie.id;
+        const link = "/movies/" + this.props.movie.id;
+        const edit_link = "/movies/edit/" + this.props.movie.id;
         return (
             <div className="card m-4" style={{"width": "18rem"}}>
                 <img src={this.props.movie.poster} className="card-img-top" alt="..."/>
