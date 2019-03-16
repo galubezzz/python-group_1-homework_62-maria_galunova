@@ -9,6 +9,7 @@ import Halls from "./containers/Halls/Halls"
 import HallDetails from "./containers/HallDetails/HallDetails"
 import HallAdd from "./containers/HallAdd/HallAdd"
 import HallEdit from "./containers/HallEdit/HallEdit"
+import Layout from "./components/Layout/Layout"
 import './App.css';
 
 class App extends Component {
@@ -17,7 +18,8 @@ class App extends Component {
         return (
             <div className="container">
                 <BrowserRouter>
-                    <Switch>
+                    <Layout>
+                        <Switch>
                             <Route exact path="/halls/" component={Halls}/>
                             <Route exact path="/halls/add" component={HallAdd}/>
                             <Route exact path="/halls/:id" component={HallDetails}/>
@@ -26,7 +28,8 @@ class App extends Component {
                             <Route exact path="/movie/add" component={MovieAdd}/>
                             <Route exact path="/movie/:id" component={MovieDetails}/>
                             <Route exact path="/movie/edit/:id" component={MovieEdit}/>
-                    </Switch>
+                        </Switch>
+                    </Layout>
                 </BrowserRouter>
             </div>
     );
