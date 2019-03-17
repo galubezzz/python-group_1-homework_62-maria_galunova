@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {NavLink} from 'react-router-dom';
+import Schedule from "../../components/Schedule/Schedule";
 
 class HallDetails extends Component {
 
@@ -52,11 +53,7 @@ class HallDetails extends Component {
                 <div className="card-body">
                     <h5 className="card-title">{this.state.hall.name}</h5>
                     <NavLink className="nav-link" to="/halls/">К списку залов</NavLink>
-                    {this.state.shows.map(show => {
-                    return <div key={show.id}>
-                            !!!{show.name.name}
-                    </div>
-                })}
+                    <Schedule schedule = {this.state.shows}/>
                 </div>
             </div>
         )
