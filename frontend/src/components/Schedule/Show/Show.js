@@ -7,10 +7,11 @@ class Show extends Component {
         console.log(this.props.show);
         return (
             <div>
-                {this.props.show.name.name}
-                {this.props.show.price}
-                {this.props.show.start_time}
-                {this.props.show.end_time}
+                <h5>Фильм: {this.props.show.name.name}</h5>
+                <p>Зал: {this.props.show.hall.name} </p>
+                <p>Цена: {this.props.show.price}</p>
+                <p>Дата начала показа: {this.props.show.start_time.slice(0, 10)}</p>
+                <p>Время начала показа: {this.props.show.start_time.slice(11, 16)}</p>
             </div>
         )
     }
