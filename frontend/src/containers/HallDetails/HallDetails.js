@@ -42,7 +42,8 @@ class HallDetails extends Component {
             })
             .then(shows =>
             {this.setState({shows: shows})})
-            .catch(error => console.log(error));}
+            .catch(error => console.log(error));
+    }
 
     render() {
 

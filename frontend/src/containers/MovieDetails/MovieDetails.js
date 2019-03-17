@@ -1,17 +1,27 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {NavLink} from 'react-router-dom';
+import Schedule from "../../components/Schedule/Schedule";
 
 class MovieDetails extends Component {
 
     state = {
-        movie: null
+        movie: null,
+        shows: null,
     };
 
     componentDidMount() {
         // match - атрибут, передаваемый роутером, содержащий путь к этому компоненту
         const match = this.props.match;
         const MOVIES_URL = 'http://127.0.0.1:8000/api/v1/movies/';
+        let current_date = new Date();
+        current_date = current_date.toISOString().slice(0, 10);
+        console.log(current_date, 'current_date');
+
+        let next_date = new Date();
+        next_date.setDate(next_date.getDate() + 3);
+        next_date = next_date.toISOString().slice(0, 10);
+        console.log(next_date, 'next_date');
 
         // match.params - переменные из пути (:id)
         // match.params.id - значение переменной, обозначенной :id в свойстве path Route-а.
@@ -22,11 +32,21 @@ class MovieDetails extends Component {
             })
             .then(movie => this.setState({movie}))
             .catch(error => console.log(error));
+
+        const SHOW_URL = "http://127.0.0.1:8000/api/v1/show/";
+        axios.get(SHOW_URL + '?movie_id=' + match.params.id + '&min_start_date=' + current_date + '&max_start_date=' + next_date)
+            .then(response => {
+                console.log(response.data);
+                return response.data;
+            })
+            .then(shows =>
+            {this.setState({shows: shows})})
+            .catch(error => console.log(error));
     }
 
     render() {
 
-        if (!this.state.movie) return null;
+        if (!this.state.movie || !this.state.shows) return null;
         return (
             <div className="card" style={{"width": "30rem"}}>
                 <img src={this.state.movie.poster} className="card-img-top" alt="..."/>
@@ -36,6 +56,7 @@ class MovieDetails extends Component {
                     <h6 className="card-subtitle mb-2 text-muted">Дата окончания показа: {this.state.movie.finish_date}</h6>
                     <p className="card-text">Описание: {this.state.movie.description}</p>
                     <p className="card-text">Жанр: {this.state.movie.сategory}</p>
+                    <Schedule schedule={this.state.shows}/>
                     <NavLink className="nav-link" to="/">К списку фильмов</NavLink>
                 </div>
             </div>
