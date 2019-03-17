@@ -14,6 +14,15 @@ class HallDetails extends Component {
         const match = this.props.match;
         const HALL_URL = 'http://localhost:8000/api/v1/hall/';
 
+        let current_date = new Date();
+        current_date = current_date.toISOString().slice(0, 10);
+        console.log(current_date, 'current_date');
+
+        let next_date = new Date();
+        next_date.setDate(next_date.getDate() + 3);
+        next_date = next_date.toISOString().slice(0, 10);
+        console.log(next_date, 'next_date');
+
         // match.params - переменные из пути (:id)
         // match.params.id - значение переменной, обозначенной :id в свойстве path Route-а.
         axios.get(HALL_URL + match.params.id)
@@ -25,16 +34,14 @@ class HallDetails extends Component {
             .catch(error => console.log(error));
 
         const SHOW_URL = "http://127.0.0.1:8000/api/v1/show/";
-        axios.get(SHOW_URL)
+        axios.get(SHOW_URL + '?hall_id=' + match.params.id + '&min_start_date=' + current_date + '&max_start_date=' + next_date)
             .then(response => {
                 console.log(response.data);
                 return response.data;
             })
             .then(shows =>
-            {   let showsInHall = shows.filter(show => show.hall.id === match.params.id);
-                this.setState({shows: showsInHall})})
-            .catch(error => console.log(error));
-    }
+            {this.setState({shows: shows})})
+            .catch(error => console.log(error));}
 
     render() {
 

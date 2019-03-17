@@ -1,6 +1,7 @@
 from webapp.models import Movie, Category, Show, Hall, Seat, Discount, Ticket, Booking
 from rest_framework import viewsets
-from api_v1.serializers import MovieCreateSerializer, MovieDisplaySerializer, CategorySerializer, ShowSerializer, SeatSerializer, HallSerializer, \
+from api_v1.serializers import MovieCreateSerializer, MovieDisplaySerializer, CategorySerializer, ShowSerializer, \
+    SeatSerializer, HallSerializer, \
     DiscountSerializer, TicketSerializer, BookingSerializer
 
 
@@ -31,9 +32,26 @@ class CategoryViewSet(NoAuthModelViewSet):
         instance.save()
 
 
-class ShowViewSet(viewsets.ModelViewSet):
+class ShowViewSet(NoAuthModelViewSet):
     queryset = Show.objects.all().order_by("name")
     serializer_class = ShowSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        movie_id = self.request.query_params.get('movie_id', None)
+        hall_id = self.request.query_params.get('hall_id', None)
+        starts_after = self.request.query_params.get('starts_after', None)
+        starts_before = self.request.query_params.get('starts_before', None)
+
+        if movie_id:
+            queryset = queryset.filter(name_id=movie_id)
+        if starts_after:
+            queryset = queryset.filter(start_time__gte=starts_after)
+        if starts_before:
+            queryset = queryset.filter(start_time__lte=starts_before)
+        if hall_id:
+            queryset = queryset.filter(hall_id=hall_id)
+        return queryset
 
     def perform_destroy(self, instance):
         instance.is_deleted = True

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'corsheaders',
     'rest_framework',
     'webapp',
@@ -124,3 +125,5 @@ MEDIA_URL = '/uploads/'
 BOOKING_CODE_LENGTH = 6
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+
