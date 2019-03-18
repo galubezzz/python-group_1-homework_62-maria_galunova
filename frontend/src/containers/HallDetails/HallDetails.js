@@ -53,7 +53,6 @@ class HallDetails extends Component {
             <div className="card">
                 <div className="card-body">
                     <h5 className="card-title">{this.state.hall.name}</h5>
-                    <NavLink className="nav-link" to="/halls/">К списку залов</NavLink>
                     <Schedule schedule = {this.state.shows}/>
                 </div>
             </div>
