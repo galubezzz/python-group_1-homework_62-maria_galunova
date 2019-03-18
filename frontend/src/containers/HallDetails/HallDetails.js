@@ -50,9 +50,9 @@ class HallDetails extends Component {
         if (!this.state.hall || !this.state.shows) return null;
 
         return (
-            <div className="card">
+            <div className="card m-3">
                 <div className="card-body">
-                    <h5 className="card-title">{this.state.hall.name}</h5>
+                    <h4 className="card-title">{this.state.hall.name}</h4>
                     <Schedule schedule = {this.state.shows}/>
                 </div>
             </div>

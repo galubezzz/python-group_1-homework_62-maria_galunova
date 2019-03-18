@@ -79,7 +79,7 @@ class HallAdd extends Component {
         }
 
 
-        return <div>
+        return <div className="mt-3">
             {alert}
             <form onSubmit={this.formSubmitted}>
                 <div className="form-group">

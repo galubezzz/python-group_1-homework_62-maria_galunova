@@ -48,7 +48,7 @@ class MovieDetails extends Component {
 
         if (!this.state.movie || !this.state.shows) return null;
         return (
-            <div className="card" style={{"width": "30rem"}}>
+            <div className="card m-3" style={{"width": "30rem"}}>
                 <img src={this.state.movie.poster} className="card-img-top" alt="..."/>
                 <div className="card-body">
                     <h5 className="card-title">{this.state.movie.name}</h5>
@@ -57,7 +57,6 @@ class MovieDetails extends Component {
                     <p className="card-text">Описание: {this.state.movie.description}</p>
                     <p className="card-text">Жанр: {this.state.movie.сategory}</p>
                     <Schedule schedule={this.state.shows}/>
-                    <NavLink className="nav-link" to="/">К списку фильмов</NavLink>
                 </div>
             </div>
         )

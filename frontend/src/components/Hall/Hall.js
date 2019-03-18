@@ -22,10 +22,9 @@ class Hall extends Component {
         return (
             <div className="card mb-4">
                 <div className="card-body">
-                    <h5 className="card-title">{this.props.hall.name}</h5>
-                    <NavLink className="nav-link" to={link}>Подробнее</NavLink>
-                    <NavLink className="nav-link" to={edit_link}>Редактировать</NavLink>
-                    <i className="fas fa-trash-alt nav-link" onClick={() => (this.deleteHall(this.props.hall.id))}></i>
+                    <NavLink className="nav-link card-title h5 text-dark p-0" to={link}>{this.props.hall.name}</NavLink>
+                    <NavLink to={edit_link}>Редактировать</NavLink>
+                    <i className="fas fa-trash-alt m-1 " onClick={() => (this.deleteHall(this.props.hall.id))}></i>
                 </div>
             </div>
         )

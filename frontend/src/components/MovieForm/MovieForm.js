@@ -185,7 +185,7 @@ class MovieForm extends Component {
             // (значения должны иметь тот же формат из двух полей, что и опции )
             const selectValue = this.getCategoryValue();
 
-            return <div>
+            return <div className="mt-3">
                 <form onSubmit={this.submitForm}>
                     <div className="form-group">
                         <label className="font-weight-bold">Название</label>

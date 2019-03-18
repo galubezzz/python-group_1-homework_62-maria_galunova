@@ -23,12 +23,11 @@ class Movie extends Component {
             <div className="card m-4" style={{"width": "18rem"}}>
                 <img src={this.props.movie.poster} className="card-img-top" alt="..."/>
                 <div className="card-body">
-                    <h5 className="card-title">{this.props.movie.name}</h5>
+                    <NavLink className="nav-link card-title h5 text-dark p-0" to={link}>{this.props.movie.name}</NavLink>
                     <h6 className="card-subtitle mb-2 text-muted">{this.props.movie.release_date}</h6>
                     <p className="card-text">{this.props.movie.description}</p>
-                    <NavLink className="nav-link" to={link}>Подробнее</NavLink>
-                    <NavLink className="nav-link" to={edit_link}>Редактировать</NavLink>
-                    <i className="fas fa-trash-alt m-1" onClick={() => (this.deleteMovie(this.props.movie.id))}></i>
+                    <NavLink to={edit_link}>Редактировать</NavLink>
+                    <i className="fas fa-trash-alt m-1" onClick={() => (this.deleteMovie(this.props.movie.id))}> </i>
                 </div>
             </div>
         )

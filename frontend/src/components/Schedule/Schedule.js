@@ -7,7 +7,7 @@ class Schedule extends Component {
     render() {
         return (
             <div>
-                <h3>Ближайшие сеансы:</h3>
+                <p>Ближайшие сеансы:</p>
                 {this.props.schedule.map(show => {
                     return <Show show = {show} key={show.id}/>
                 })}
