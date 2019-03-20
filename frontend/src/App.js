@@ -11,6 +11,7 @@ import HallAdd from "./containers/HallAdd/HallAdd"
 import HallEdit from "./containers/HallEdit/HallEdit"
 import Layout from "./components/Layout/Layout"
 import './App.css';
+import AuthRoute from "./components/AuthRoute/AuthRoute";
 
 class App extends Component {
 
@@ -21,13 +22,13 @@ class App extends Component {
                     <Layout>
                         <Switch>
                             <Route exact path="/halls/" component={Halls}/>
-                            <Route exact path="/halls/add" component={HallAdd}/>
+                            <AuthRoute exact path="/halls/add" component={HallAdd}/>
                             <Route exact path="/halls/:id" component={HallDetails}/>
-                            <Route exact path="/halls/edit/:id" component={HallEdit}/>
+                            <AuthRoute exact path="/halls/edit/:id" component={HallEdit}/>
                             <Route exact path="/" component={Movies}/>
-                            <Route exact path="/movies/add" component={MovieAdd}/>
+                            <AuthRoute exact path="/movies/add" component={MovieAdd}/>
                             <Route exact path="/movies/:id" component={MovieDetails}/>
-                            <Route exact path="/movies/edit/:id" component={MovieEdit}/>
+                            <AuthRoute exact path="/movies/edit/:id" component={MovieEdit}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/logout" component={Logout}/>
                         </Switch>

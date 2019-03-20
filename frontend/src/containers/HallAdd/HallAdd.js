@@ -48,6 +48,7 @@ class HallAdd extends Component {
         });
         const HALLS_URL = 'http://localhost:8000/api/v1/hall/';
         // отправка запроса
+
         axios.post(HALLS_URL, this.state.hall)
             .then(response => {
                 console.log(response.data);
