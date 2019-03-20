@@ -3,6 +3,8 @@ from rest_framework import viewsets
 from api_v1.serializers import MovieCreateSerializer, MovieDisplaySerializer, CategorySerializer, ShowSerializer, \
     SeatSerializer, HallSerializer, \
     DiscountSerializer, TicketSerializer, BookingSerializer
+from rest_framework.permissions import IsAuthenticated
+
 
 
 class BaseViewSet(viewsets.ModelViewSet):

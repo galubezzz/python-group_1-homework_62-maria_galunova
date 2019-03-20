@@ -9,9 +9,12 @@ import Halls from "./containers/Halls/Halls"
 import HallDetails from "./containers/HallDetails/HallDetails"
 import HallAdd from "./containers/HallAdd/HallAdd"
 import HallEdit from "./containers/HallEdit/HallEdit"
+import Login from "./containers/Login/Login";
+import Logout from "./containers/Logout/Logout";
 import Layout from "./components/Layout/Layout"
 import './App.css';
 import AuthRoute from "./components/AuthRoute/AuthRoute";
+
 
 class App extends Component {
 
