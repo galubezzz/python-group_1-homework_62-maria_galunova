@@ -14,6 +14,10 @@ const Menu = () => (
                 <MenuItem to="/movies/add" label="Добавить фильм"/>
                 <MenuItem to="/halls/" label="Залы"/>
                 <MenuItem to="/halls/add" label="Добавить зал"/>
+                {localStorage.getItem('auth-token') ?
+                    <MenuItem to="/logout">Выйти</MenuItem> :
+                    <MenuItem to="/login">Войти</MenuItem>}
+
             </ul>
         </div>
     </Fragment>

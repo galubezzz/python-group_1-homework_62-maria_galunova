@@ -29,12 +29,13 @@ class App extends Component {
                             <Route exact path="/movies/:id" component={MovieDetails}/>
                             <Route exact path="/movies/edit/:id" component={MovieEdit}/>
                             <Route path="/login" component={Login}/>
+                            <Route path="/logout" component={Logout}/>
                         </Switch>
                     </Layout>
                 </BrowserRouter>
             </div>
-    );
+        );
     }
-    }
+}
 
-    export default App;
+export default App;
