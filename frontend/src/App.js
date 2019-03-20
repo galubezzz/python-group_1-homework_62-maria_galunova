@@ -28,6 +28,7 @@ class App extends Component {
                             <Route exact path="/movies/add" component={MovieAdd}/>
                             <Route exact path="/movies/:id" component={MovieDetails}/>
                             <Route exact path="/movies/edit/:id" component={MovieEdit}/>
+                            <Route path="/login" component={Login}/>
                         </Switch>
                     </Layout>
                 </BrowserRouter>
