@@ -64,7 +64,7 @@ class ShowViewSet(BaseViewSet):
         instance.save()
 
 
-class HallViewSet(viewsets.ModelViewSet):
+class HallViewSet(BaseViewSet):
     queryset = Hall.objects.active().order_by("name")
     serializer_class = HallSerializer
 
@@ -73,7 +73,7 @@ class HallViewSet(viewsets.ModelViewSet):
         instance.save()
 
 
-class SeatViewSet(viewsets.ModelViewSet):
+class SeatViewSet(BaseViewSet):
     queryset = Seat.objects.all().order_by("hall")
     serializer_class = SeatSerializer
 
@@ -82,7 +82,7 @@ class SeatViewSet(viewsets.ModelViewSet):
         instance.save()
 
 
-class DiscountViewSet(viewsets.ModelViewSet):
+class DiscountViewSet(BaseViewSet):
     queryset = Discount.objects.all().order_by("name")
     serializer_class = DiscountSerializer
 
@@ -91,7 +91,7 @@ class DiscountViewSet(viewsets.ModelViewSet):
         instance.save()
 
 
-class TicketViewSet(viewsets.ModelViewSet):
+class TicketViewSet(BaseViewSet):
     queryset = Ticket.objects.all().order_by("show")
     serializer_class = TicketSerializer
 
@@ -100,7 +100,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         instance.save()
 
 
-class BookingViewSet(viewsets.ModelViewSet):
+class BookingViewSet(BaseViewSet):
     queryset = Booking.objects.all().order_by("-created_date")
     serializer_class = BookingSerializer
 
