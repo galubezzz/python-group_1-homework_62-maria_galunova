@@ -5,11 +5,15 @@ from api_v1.serializers import MovieCreateSerializer, MovieDisplaySerializer, Ca
     DiscountSerializer, TicketSerializer, BookingSerializer
 
 
-class NoAuthModelViewSet(viewsets.ModelViewSet):
-    authentication_classes = []
+class BaseViewSet(viewsets.ModelViewSet):
+    def get_permissions(self):
+        permissions = super().get_permissions()
+        if self.request.method in ["POST", "DELETE", "PUT", "PATCH"]:
+            permissions.append(IsAuthenticated())
+        return permissions
 
 
-class MovieViewSet(NoAuthModelViewSet):
+class MovieViewSet(BaseViewSet):
     queryset = Movie.objects.active().order_by('-release_date')
 
     def get_serializer_class(self):
@@ -23,7 +27,7 @@ class MovieViewSet(NoAuthModelViewSet):
         instance.save()
 
 
-class CategoryViewSet(NoAuthModelViewSet):
+class CategoryViewSet(BaseViewSet):
     queryset = Category.objects.all().order_by("name")
     serializer_class = CategorySerializer
 
@@ -32,7 +36,7 @@ class CategoryViewSet(NoAuthModelViewSet):
         instance.save()
 
 
-class ShowViewSet(NoAuthModelViewSet):
+class ShowViewSet(BaseViewSet):
     queryset = Show.objects.all().order_by("name")
     serializer_class = ShowSerializer
 
