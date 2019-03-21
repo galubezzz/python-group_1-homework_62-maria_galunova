@@ -29,7 +29,7 @@ class Movies extends Component {
             <div className='row'>
                 {this.state.movies.map(movie => {
                     return <div key={movie.id}>
-                        <Movie movie={movie} updateBoard={this.getMovies.bind(this)}/>
+                        <Movie movie={movie} updateBoard={this.getMovies.bind(this)} history={this.props.history}/>
                     </div>
                 })}
             </div>

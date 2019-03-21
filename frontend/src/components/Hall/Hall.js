@@ -8,7 +8,6 @@ class Hall extends Component {
 
     deleteHall(id) {
         if (!localStorage.getItem('auth-token')) {
-            console.log(this.props.history);
             this.props.history.push("/login");
         }
         console.log(id);
