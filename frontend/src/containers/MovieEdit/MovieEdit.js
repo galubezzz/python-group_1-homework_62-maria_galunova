@@ -11,6 +11,8 @@ class MovieEdit extends Component {
 
         // сообщение об ошибке
         alert: null,
+
+        errors: {}
     };
 
     componentDidMount() {
@@ -31,6 +33,7 @@ class MovieEdit extends Component {
             .catch(error => {
                 console.log(error);
                 console.log(error.response);
+
             });
     }
 
@@ -89,6 +92,11 @@ class MovieEdit extends Component {
                 // пока что выводим их в консоль
                 console.log(error.response);
                 this.showErrorAlert(error.response);
+                this.setState({
+                    ...this.state,
+                    errors: error.response.data
+
+                });
             });
     };
 
@@ -96,7 +104,7 @@ class MovieEdit extends Component {
         const {alert, movie} = this.state;
         return <Fragment>
             {alert ? <div className={"mb-2 alert alert-" + alert.type}>{alert.message}</div> : null}
-            {movie ? <MovieForm onSubmit={this.formSubmitted} movie={movie}/> : null}
+            {movie ? <MovieForm onSubmit={this.formSubmitted} movie={movie} errors = {this.state.errors}/> : null}
         </Fragment>
     }
 }
