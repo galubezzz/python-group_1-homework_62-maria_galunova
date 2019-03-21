@@ -21,7 +21,9 @@ class Movie extends Component {
             this.props.updateBoard();
             return response.data;
 
-        }).catch(error => console.log(error));
+        }).catch(error => {console.log(error);
+        alert(error);
+        });
     }
 
     render() {
