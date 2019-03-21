@@ -14,7 +14,9 @@ class HallAdd extends Component {
         alert: null,
 
         // индикатор отключения кнопки submit, если запрос выполняется
-        submitDisabled: false
+        submitDisabled: false,
+
+        errors: {}
     };
 
 
@@ -49,8 +51,12 @@ class HallAdd extends Component {
         const HALLS_URL = 'http://localhost:8000/api/v1/hall/';
         // отправка запроса
 
-        axios.post(HALLS_URL, this.state.hall)
-            .then(response => {
+        axios.post(HALLS_URL, this.state.hall, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Token ' + localStorage.getItem('auth-token')
+            }
+        }).then(response => {
                 console.log(response.data);
                 if (response.status === 201) return response.data;
                 throw new Error('Hall was not added!');
@@ -66,8 +72,20 @@ class HallAdd extends Component {
                     newState.submitDisabled = false;
                     return newState;
                 });
+                this.setState({
+                    ...this.state,
+                    errors: error.response.data
+                });
             });
     };
+
+    showErrors = (name) => {
+        if (this.state.errors && this.state.errors[name]) {
+            return this.state.errors[name].map((error, index) => <p className="text-danger" key={index}>{error}</p>);
+        }
+        return null;
+    };
+
 
     render() {
         // распаковка данных фильма, чтобы было удобнее к ним обращаться
@@ -83,12 +101,15 @@ class HallAdd extends Component {
         return <div className="mt-3">
             {alert}
             <form onSubmit={this.formSubmitted}>
+                {this.showErrors('non_field_errors')}
                 <div className="form-group">
                     <label className="font-weight-bold">Название</label>
                     <input type="text" className="form-control" name="name" value={name} onChange={this.inputChanged}/>
+                    {this.showErrors('name')}
                 </div>
                 <button disabled={this.state.submitDisabled} type="submit"
-                        className="btn btn-primary">Сохранить</button>
+                        className="btn btn-primary">Сохранить
+                </button>
             </form>
         </div>;
     };
