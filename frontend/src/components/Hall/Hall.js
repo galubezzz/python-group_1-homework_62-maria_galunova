@@ -8,7 +8,11 @@ class Hall extends Component {
     deleteHall(id) {
         console.log(id);
         const HALL_URL = 'http://localhost:8000/api/v1/hall/';
-        axios.delete(HALL_URL + id, {}).then(response => {
+        axios.delete(HALL_URL + id, {
+            headers: {
+                'Authorization': 'Token ' + localStorage.getItem('auth-token')
+            }
+        }).then(response => {
             console.log(response.data);
             this.props.updateBoard();
             return response.data;
