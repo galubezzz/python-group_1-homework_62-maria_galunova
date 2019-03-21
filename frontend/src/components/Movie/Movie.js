@@ -8,7 +8,12 @@ class Movie extends Component {
     deleteMovie(id) {
         console.log(id);
         const MOVIES_URL = 'http://localhost:8000/api/v1/movies/';
-        axios.delete(MOVIES_URL + id, {}).then(response => {
+        axios.delete(MOVIES_URL + id, {
+            headers: {
+        'Authorization': 'Token ' + localStorage.getItem('auth-token')
+    }
+
+        }).then(response => {
             console.log(response.data);
             this.props.updateBoard();
             return response.data;

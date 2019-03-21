@@ -49,7 +49,7 @@ class MovieEdit extends Component {
         Object.keys(movie).forEach(key => {
             const value = movie[key];
             if (value) {
-                if(Array.isArray(value)) {
+                if (Array.isArray(value)) {
                     // для полей с несколькими значениями (категорий)
                     // нужно добавить каждое значение отдельно
                     value.forEach(item => formData.append(key, item));
@@ -65,10 +65,14 @@ class MovieEdit extends Component {
     formSubmitted = (movie) => {
         // сборка данных для запроса
         const formData = this.gatherFormData(movie);
-         const MOVIES_URL = 'http://localhost:8000/api/v1/movies/';
+        const MOVIES_URL = 'http://localhost:8000/api/v1/movies/';
         // отправка запроса
         return axios.put(MOVIES_URL + this.props.match.params.id + '/', formData, {
-            headers: {'Content-Type': 'multipart/form-data'}
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Token ' + localStorage.getItem('auth-token')
+            }
+
         })
             .then(response => {
                 // при успешном создании response.data содержит данные фильма

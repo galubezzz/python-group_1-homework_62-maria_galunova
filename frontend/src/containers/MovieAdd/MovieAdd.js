@@ -4,20 +4,14 @@ import axios from 'axios';
 import MovieForm from "../../components/MovieForm/MovieForm";
 
 const MOVIES_URL = 'http://localhost:8000/api/v1/movies/';
+
 class MovieAdd extends Component {
     state = {
         // сообщение об ошибке
         alert: null,
+        errors: {}
     };
 
-    // вывод сообщение об ошибке
-    showErrorAlert = (error) => {
-        this.setState(prevState => {
-            let newState = {...prevState};
-            newState.alert = {type: 'danger', message: `Movie was not added!`};
-            return newState;
-        });
-    };
 
     // сборка данных для запроса
     gatherFormData = (movie) => {
@@ -25,7 +19,7 @@ class MovieAdd extends Component {
         Object.keys(movie).forEach(key => {
             const value = movie[key];
             if (value) {
-                if(Array.isArray(value)) {
+                if (Array.isArray(value)) {
                     // для полей с несколькими значениями (категорий)
                     // нужно добавить каждое значение отдельно
                     value.forEach(item => formData.append(key, item));
@@ -44,8 +38,9 @@ class MovieAdd extends Component {
         console.log(movie);
         // отправка запроса
         return axios.post(MOVIES_URL, formData, {
-            headers: {'Content-Type': 'multipart/form-data',
-             'Authorization': 'Token ' + localStorage.getItem('auth-token')
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Token ' + localStorage.getItem('auth-token')
             }
         })
             .then(response => {
@@ -58,22 +53,24 @@ class MovieAdd extends Component {
             })
             .catch(error => {
                 console.log(error);
-                // error.response - ответ с сервера
-                // при ошибке 400 в ответе с сервера содержатся ошибки валидации
-                // пока что выводим их в консоль
                 console.log(error.response);
-                this.showErrorAlert(error.response);
+                this.setState({
+                    ...this.state,
+                    errors: error.response.data
+
+                });
             });
-    };
-
-    render() {
-        const alert = this.state.alert;
-        return <Fragment>
-            {alert ? <div className={"mb-2 alert alert-" + alert.type}>{alert.message}</div> : null}
-            <MovieForm onSubmit={this.formSubmitted}/>
-        </Fragment>
     }
-}
+
+        render()
+        {
+            const alert = this.state.alert;
+            return <Fragment>
+                {alert ? <div className={"mb-2 alert alert-" + alert.type}>{alert.message}</div> : null}
+                <MovieForm onSubmit={this.formSubmitted} errors={this.state.errors}/>
+            </Fragment>
+        }
+    }
 
 
-export default MovieAdd;
+    export default MovieAdd;
