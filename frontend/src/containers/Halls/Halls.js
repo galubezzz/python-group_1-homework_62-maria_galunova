@@ -29,7 +29,7 @@ class Halls extends Component {
             <div className='row m-3'>
                 {this.state.halls.map(hall => {
                     return <div className="col-sm-3" key={hall.id}>
-                            <Hall hall={hall} updateBoard={this.getHalls.bind(this)}/>
+                            <Hall hall={hall} updateBoard={this.getHalls.bind(this)} history = {this.props.history}/>
                     </div>
                 })}
             </div>

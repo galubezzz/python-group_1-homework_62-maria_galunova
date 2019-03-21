@@ -3,9 +3,14 @@ import {NavLink} from 'react-router-dom';
 import axios from 'axios';
 
 
+
 class Hall extends Component {
 
     deleteHall(id) {
+        if (!localStorage.getItem('auth-token')) {
+            console.log(this.props.history);
+            this.props.history.push("/login");
+        }
         console.log(id);
         const HALL_URL = 'http://localhost:8000/api/v1/hall/';
         axios.delete(HALL_URL + id, {
