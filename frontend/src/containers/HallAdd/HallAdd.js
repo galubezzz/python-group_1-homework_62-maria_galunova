@@ -53,7 +53,6 @@ class HallAdd extends Component {
 
         axios.post(HALLS_URL, this.state.hall, {
             headers: {
-                'Content-Type': 'multipart/form-data',
                 'Authorization': 'Token ' + localStorage.getItem('auth-token')
             }
         }).then(response => {

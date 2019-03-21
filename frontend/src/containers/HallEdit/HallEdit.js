@@ -49,7 +49,11 @@ class HallAdd extends Component {
         const HALLS_URL = 'http://localhost:8000/api/v1/hall/';
         const match = this.props.match;
         // отправка запроса
-        axios.put(HALLS_URL + match.params.id + '/', this.state.hall)
+        axios.put(HALLS_URL + match.params.id + '/', this.state.hall, {
+            headers: {
+                'Authorization': 'Token ' + localStorage.getItem('auth-token')
+            }
+        })
             .then(response => {
                 console.log(response.data);
                 if (response.status === 200) return response.data;
@@ -65,6 +69,10 @@ class HallAdd extends Component {
                     newState.alert = {type: 'danger', message: `Hall was not added!`};
                     newState.submitDisabled = false;
                     return newState;
+                });
+                this.setState({
+                    ...this.state,
+                    errors: error.response.data
                 });
             });
     };
@@ -85,6 +93,13 @@ class HallAdd extends Component {
             .catch(error => console.log(error));
     }
 
+    showErrors = (name) => {
+        if (this.state.errors && this.state.errors[name]) {
+            return this.state.errors[name].map((error, index) => <p className="text-danger" key={index}>{error}</p>);
+        }
+        return null;
+    };
+
     render() {
         // распаковка данных фильма, чтобы было удобнее к ним обращаться
         const {name} = this.state.hall;
@@ -99,9 +114,11 @@ class HallAdd extends Component {
         return <div>
             {alert}
             <form onSubmit={this.formSubmitted}>
+                {this.showErrors('non_field_errors')}
                 <div className="form-group">
                     <label className="font-weight-bold">Название</label>
                     <input type="text" className="form-control" name="name" value={name} onChange={this.inputChanged}/>
+                    {this.showErrors('name')}
                 </div>
                 <button disabled={this.state.submitDisabled} type="submit"
                         className="btn btn-primary">Сохранить</button>
