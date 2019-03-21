@@ -4,6 +4,11 @@ import axios from 'axios';
 
 
 class Movie extends Component {
+    state = {
+
+        // сообщение об ошибке
+        alert: null,
+    };
 
     deleteMovie(id) {
         if (!localStorage.getItem('auth-token')) {
@@ -21,16 +26,23 @@ class Movie extends Component {
             this.props.updateBoard();
             return response.data;
 
-        }).catch(error => {console.log(error);
-        alert(error);
+        }).catch(error => {
+            console.log(error);
+            let new_alert = {type: 'danger', message: `Hall was not deleted!`};
+            this.setState({alert: new_alert});
         });
     }
 
     render() {
         const link = "/movies/" + this.props.movie.id;
         const edit_link = "/movies/edit/" + this.props.movie.id;
+        let alert = null;
+        if (this.state.alert) {
+            alert = <div className={"alert alert-" + this.state.alert.type}>{this.state.alert.message}</div>
+        }
         return (
             <div className="card m-4" style={{"width": "18rem"}}>
+                {alert}
                 <img src={this.props.movie.poster} className="card-img-top" alt="..."/>
                 <div className="card-body">
                     <NavLink className="nav-link card-title h5 text-dark p-0"
