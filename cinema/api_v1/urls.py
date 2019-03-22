@@ -13,14 +13,11 @@ router.register(r'discount', views.DiscountViewSet)
 router.register(r'ticket', views.TicketViewSet)
 router.register(r'booking', views.BookingViewSet)
 
-
-
 app_name = 'api_v1'
 
 urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('login/', obtain_auth_token, name='api_token_auth')
+    path('login/', obtain_auth_token, name='api_token_auth'),
+    path('register/', views.UserCreateView.as_view(), name='register')
 ]
-
-
