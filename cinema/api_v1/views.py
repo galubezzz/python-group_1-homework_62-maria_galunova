@@ -2,9 +2,17 @@ from webapp.models import Movie, Category, Show, Hall, Seat, Discount, Ticket, B
 from rest_framework import viewsets
 from api_v1.serializers import MovieCreateSerializer, MovieDisplaySerializer, CategorySerializer, ShowSerializer, \
     SeatSerializer, HallSerializer, \
-    DiscountSerializer, TicketSerializer, BookingSerializer
+    DiscountSerializer, TicketSerializer, BookingSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
+from django.contrib.auth.models import User
 
+
+class UserCreateView(CreateAPIView):
+    model = User
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
 
 class BaseViewSet(viewsets.ModelViewSet):
