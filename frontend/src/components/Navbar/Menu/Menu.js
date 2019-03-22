@@ -16,7 +16,9 @@ const Menu = () => (
                 <MenuItem to="/halls/add" label="Добавить зал"/>
                 {localStorage.getItem('auth-token') ?
                     <MenuItem to="/logout" label="Выйти"/> :
-                    <MenuItem to="/login"label="Войти"/>}
+                    [<MenuItem to="/login" label="Войти"/>,
+                    <MenuItem to="/register" label='Зарегистрироваться'/>]
+                }
 
             </ul>
         </div>

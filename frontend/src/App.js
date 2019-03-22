@@ -14,6 +14,7 @@ import Logout from "./containers/Logout/Logout";
 import Layout from "./components/Layout/Layout"
 import './App.css';
 import AuthRoute from "./components/AuthRoute/AuthRoute";
+import Register from "./containers/Register/Register";
 
 
 class App extends Component {
@@ -34,6 +35,7 @@ class App extends Component {
                             <AuthRoute exact path="/movies/edit/:id" component={MovieEdit}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/logout" component={Logout}/>
+                            <Route path="/register" component={Register}/>
                         </Switch>
                     </Layout>
                 </BrowserRouter>
