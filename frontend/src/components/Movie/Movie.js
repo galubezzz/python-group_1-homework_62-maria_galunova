@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {NavLink} from 'react-router-dom';
 import axios from 'axios';
-
+import { withRouter } from "react-router";
 
 class Movie extends Component {
     state = {
@@ -57,4 +57,4 @@ class Movie extends Component {
     }
 }
 
-export default Movie;
+export default withRouter(Movie);
