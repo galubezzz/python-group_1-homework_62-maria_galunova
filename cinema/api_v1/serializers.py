@@ -8,7 +8,6 @@ class UserSerializer(serializers.ModelSerializer):
     # url = serializers.HyperlinkedIdentityField(view_name='api_v1:user-detail')
 
 
-
     def create(self, validated_data):
         password = validated_data.pop('password')
         user = User.objects.create(**validated_data)

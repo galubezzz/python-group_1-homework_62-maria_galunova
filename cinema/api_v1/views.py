@@ -48,7 +48,7 @@ class UserViewSet(BaseViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    @list_route(methods=['get'], url_path='username/(?P<username>\w+)')
+    @list_route(methods=['get', 'patch'], url_path='username/(?P<username>\w+)')
     def get_by_username(self, request, username):
         user = get_object_or_404(User, username=username)
         return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
