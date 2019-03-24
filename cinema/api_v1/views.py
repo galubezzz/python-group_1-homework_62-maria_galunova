@@ -10,6 +10,9 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from rest_framework.decorators import list_route
 
 
 class LoginView(ObtainAuthToken):
@@ -44,6 +47,11 @@ class BaseViewSet(viewsets.ModelViewSet):
 class UserViewSet(BaseViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    @list_route(methods=['get'], url_path='username/(?P<username>\w+)')
+    def get_by_username(self, request, username):
+        user = get_object_or_404(User, username=username)
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
 
 class MovieViewSet(BaseViewSet):
