@@ -23,8 +23,11 @@ class Account extends Component {
 
     render() {
         return <Fragment>
-            <div className='row'>
-                {this.state.user.username}
+            <div>
+                <p>Имя пользователя: {this.state.user.username}</p>
+                <p>Имя: {this.state.user.first_name}</p>
+                <p>Фамилия: {this.state.user.last_name}</p>
+                <p>Email: {this.state.user.email}</p>
             </div>
         </Fragment>
     }
