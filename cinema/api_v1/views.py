@@ -41,6 +41,11 @@ class BaseViewSet(viewsets.ModelViewSet):
         return permissions
 
 
+class UserViewSet(BaseViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 class MovieViewSet(BaseViewSet):
     queryset = Movie.objects.active().order_by('-release_date')
 
