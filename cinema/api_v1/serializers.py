@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    # url = serializers.HyperlinkedIdentityField(view_name='api_v1:user-detail')
 
+    # url = serializers.HyperlinkedIdentityField(view_name='api_v1:user-detail')
 
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -15,9 +15,19 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.first_name)
+        if validated_data.get('password'):
+            instance.set_password(validated_data.get('password'))
+        instance.save()
+        return instance
+
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email')
+
 
 class InlineCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,10 +52,12 @@ class InlineMovieSerializer(serializers.ModelSerializer):
         model = Movie
         fields = ('id', 'name')
 
+
 class InlineShowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Show
         fields = ("id", "name", "start_time")
+
 
 class InlineDiscountSerializer(serializers.ModelSerializer):
     class Meta:
@@ -118,7 +130,8 @@ class TicketSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="api_v1:ticket-detail")
     show_url = serializers.HyperlinkedRelatedField(view_name="api_v1:show-detail", read_only=True, source="show")
     seat_url = serializers.HyperlinkedRelatedField(view_name="api_v1:seat-detail", read_only=True, source="seat")
-    discount_url = serializers.HyperlinkedRelatedField(view_name="api_v1:discount-detail", read_only=True, source="discount")
+    discount_url = serializers.HyperlinkedRelatedField(view_name="api_v1:discount-detail", read_only=True,
+                                                       source="discount")
     show = InlineShowSerializer()
     seat = InlineSeatSerializer()
     discount = InlineDiscountSerializer()

@@ -33,6 +33,19 @@ class AccountForm extends Component {
         this.updateUserState(fieldName, value);
     };
 
+    passwordConfirmChange = (event) => {
+        this.inputChanged(event);
+        const password = this.state.user.password;
+        const passwordConfirm = event.target.value;
+        const errors = (password === passwordConfirm) ? [] : ['Пароли не совпадают'];
+        this.setState({
+            errors: {
+                ...this.state.errors,
+                passwordConfirm: errors
+            }
+        });
+    };
+
 
     // обработчик отправки формы
     formSubmitted = (event) => {
@@ -45,7 +58,11 @@ class AccountForm extends Component {
             return newState;
         });
         const USERS_URL = 'http://localhost:8000/api/v1/users/';
-        axios.patch(USERS_URL + this.state.user.id + '/', this.state.user, {
+        const userData = {...this.state.user};
+        if (!userData.password) {
+            delete userData.password
+        }
+        axios.patch(USERS_URL + this.state.user.id + '/', userData, {
             headers: {
                 'Authorization': 'Token ' + localStorage.getItem('auth-token')
             }
@@ -81,6 +98,8 @@ class AccountForm extends Component {
     };
 
     render() {
+        const password = null;
+        const passwordConfirm = null;
         // распаковка данных фильма, чтобы было удобнее к ним обращаться
 
         // создание разметки для алерта, если он есть
@@ -94,12 +113,6 @@ class AccountForm extends Component {
             {alert}
             <form onSubmit={this.formSubmitted}>
                 {this.showErrors('non_field_errors')}
-                <div className="form-group">
-                    <label className="font-weight-bold">Имя пользователя</label>
-                    <input type="text" className="form-control" name="username" value={this.state.user.username}
-                           onChange={this.inputChanged}/>
-                    {this.showErrors('username')}
-                </div>
                 <div className="form-group">
                     <label className="font-weight-bold">Имя</label>
                     <input type="text" className="form-control" name="first_name" value={this.state.user.first_name}
@@ -117,6 +130,18 @@ class AccountForm extends Component {
                     <input type="text" className="form-control" name="email" value={this.state.user.email}
                            onChange={this.inputChanged}/>
                     {this.showErrors('email')}
+                </div>
+                <div className="form-row">
+                    <label className="font-weight-bold">Пароль</label>
+                    <input type="password" className="form-control" name="password" value={password}
+                           onChange={this.inputChanged}/>
+                    {this.showErrors('password')}
+                </div>
+                <div className="form-row">
+                    <label className="font-weight-bold">Подтверждение пароля</label>
+                    <input type="password" className="form-control" name="passwordConfirm" value={passwordConfirm}
+                           onChange={this.passwordConfirmChange}/>
+                    {this.showErrors('passwordConfirm')}
                 </div>
                 <button disabled={this.state.submitDisabled} type="submit"
                         className="btn btn-primary">Сохранить
