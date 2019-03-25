@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import axios from "axios";
+import { withRouter } from "react-router";
 
 class AccountForm extends Component {
 
@@ -12,7 +13,7 @@ class AccountForm extends Component {
         alert: null,
 
         // индикатор отключения кнопки submit, если запрос выполняется
-        submitDisabled: false
+        submitDisabled: false,
     };
 
 
@@ -72,8 +73,7 @@ class AccountForm extends Component {
                 if (response.status === 200) return response.data;
                 throw new Error('User was not updated!');
             })
-            // если всё успешно, переходим на просмотр страницы фильма с id,
-            // указанным в ответе
+            .then(user => this.props.history.go())
             .catch(error => {
                 console.log(error);
                 this.setState(prevState => {
@@ -87,6 +87,7 @@ class AccountForm extends Component {
                     errors: error.response.data
                 });
             });
+
     };
 
 
@@ -152,4 +153,4 @@ class AccountForm extends Component {
 
 }
 
-export default AccountForm;
+export default withRouter(AccountForm);

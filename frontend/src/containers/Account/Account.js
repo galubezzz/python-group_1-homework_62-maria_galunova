@@ -1,10 +1,9 @@
 import React, {Fragment, Component} from 'react'
-import {NavLink} from "react-router-dom";
 import axios from 'axios';
 import AccountForm from "../../components/AccountForm/AccountForm";
 
 
-const USERS_URL = 'http://localhost:8000/api/v1/users/username/';
+const USER_URL = 'http://localhost:8000/api/v1/users/username/';
 
 class Account extends Component {
     state = {
@@ -13,11 +12,11 @@ class Account extends Component {
     };
 
     componentDidMount() {
-        this.getMovies();
+        this.getUser();
     }
 
-    getMovies(){
-        axios.get(USERS_URL + localStorage.getItem("username"))
+    getUser(){
+        axios.get(USER_URL + localStorage.getItem("username"))
             .then(response => {console.log(response.data); return response.data;})
             .then(user => this.setState({user}))
             .catch(error => console.log(error));
