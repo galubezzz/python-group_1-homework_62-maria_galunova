@@ -1,37 +1,35 @@
 import React, {Component, Fragment} from 'react';
-import {LOGIN_URL} from "../../api-urls";
-import axios from 'axios';
-
+import {login, LOGIN_SUCCESS} from '../../store/actions/login'
+import {connect} from "react-redux";
 
 class Login extends Component {
     state = {
         credentials: {
             username: "",
             password: ""
-        },
-        errors: {}
+        }
+    };
+
+    redirect = () => {
+        const {location, history} = this.props;
+        if (location.state) {
+            history.replace(location.state.next);
+        } else {
+            history.goBack();
+        }
     };
 
     formSubmitted = (event) => {
         event.preventDefault();
-        return axios.post(LOGIN_URL, this.state.credentials).then(response => {
-            console.log(response);
-            localStorage.setItem('auth-token', response.data.token);
-            localStorage.setItem('username', response.data.username);
-            localStorage.setItem('is_admin', response.data.is_admin);
-            localStorage.setItem('is_staff', response.data.is_staff);
-            if (this.props.location.state) {
-                this.props.history.replace(this.props.location.state.next);
-            } else {
-                this.props.history.goBack();
-            }
-        }).catch(error => {
-            console.log(error);
-            console.log(error.response);
-            this.setState({
-                ...this.state,
-                errors: error.response.data
-            })
+        const {username, password} = this.state.credentials;
+        // один из вариантов редиректа - вернуть результат запроса
+        // из action-creator'а login(). Результатом будет action, обёрнутый в Promise,
+        // поэтому у него можно вызвать метод then, в котором проверить тип action'а,
+        // и если вход успешен (тип action'а - LOGIN_SUCCESS),
+        // то перенаправить пользователя на другую страницу.
+        // смотрите также комментарий к login() в actions/login.js.
+        this.props.login(username, password).then((result) => {
+            if(result.type === LOGIN_SUCCESS) this.redirect();
         });
     };
 
@@ -46,8 +44,8 @@ class Login extends Component {
     };
 
     showErrors = (name) => {
-        if(this.state.errors && this.state.errors[name]) {
-            return this.state.errors[name].map((error, index) => <p className="text-danger" key={index}>{error}</p>);
+        if(this.props.errors && this.props.errors[name]) {
+            return this.props.errors[name].map((error, index) => <p className="text-danger" key={index}>{error}</p>);
         }
         return null;
     };
@@ -70,11 +68,18 @@ class Login extends Component {
                            onChange={this.inputChanged}/>
                     {this.showErrors('password')}
                 </div>
-                <button type="submit" className="btn btn-primary mt-2">Войти</button>
+                <button disabled={this.props.loading} type="submit" className="btn btn-primary mt-2">Войти</button>
             </form>
         </Fragment>
     }
 }
 
 
-export default Login;
+const mapStateToProps = state => state.login;
+
+const mapDispatchToProps = dispatch => ({
+    login: (username, password) => dispatch(login(username, password))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
