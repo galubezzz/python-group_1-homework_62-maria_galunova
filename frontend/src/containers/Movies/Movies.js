@@ -1,7 +1,8 @@
 import React, {Fragment, Component} from 'react'
-import {NavLink} from "react-router-dom";
 import axios from 'axios';
 import Movie from "../../components/Movie/Movie";
+import {loadMovies} from "../../store/actions/movie-list";
+import {connect} from "react-redux";
 
 
 // компонент для показа списка фильмов клиенту
@@ -9,12 +10,9 @@ import Movie from "../../components/Movie/Movie";
 const MOVIES_URL = 'http://localhost:8000/api/v1/movies';
 
 class Movies extends Component {
-    state = {
-        movies: [],
-    };
 
     componentDidMount() {
-        this.getMovies();
+        this.props.loadMovies();
     }
 
     getMovies(){
@@ -27,7 +25,7 @@ class Movies extends Component {
     render() {
         return <Fragment>
             <div className='row'>
-                {this.state.movies.map(movie => {
+                {this.props.movies.map(movie => {
                     return <div key={movie.id}>
                         <Movie movie={movie} updateBoard={this.getMovies.bind(this)} />
                     </div>
@@ -37,5 +35,10 @@ class Movies extends Component {
     }
 }
 
+const mapStateToProps = (state) => state.movies;
+const mapDispatchToProps = (dispatch) => ({
+    loadMovies: () => dispatch(loadMovies())
+});
 
-export default Movies;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Movies);
