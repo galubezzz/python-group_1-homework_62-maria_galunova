@@ -2,6 +2,9 @@ import React, {Fragment, Component} from 'react'
 import {NavLink} from "react-router-dom";
 import axios from 'axios';
 import Hall from "../../components/Hall/Hall";
+import {loadMovies} from "../../store/actions/movie-list";
+import connect from "react-redux/es/connect/connect";
+import {loadHalls} from "../../store/actions/halls";
 
 
 // компонент для показа списка фильмов клиенту
@@ -9,12 +12,9 @@ import Hall from "../../components/Hall/Hall";
 const HALLS_URL = "http://127.0.0.1:8000/api/v1/hall/";
 
 class Halls extends Component {
-    state = {
-        halls: [],
-    };
 
     componentDidMount() {
-        this.getHalls();
+        this.props.loadHalls();
     }
 
     getHalls(){
@@ -27,7 +27,7 @@ class Halls extends Component {
     render() {
         return <Fragment>
             <div className='row m-3'>
-                {this.state.halls.map(hall => {
+                {this.props.halls.map(hall => {
                     return <div className="col-sm-3" key={hall.id}>
                             <Hall hall={hall} updateBoard={this.getHalls.bind(this)} history = {this.props.history}/>
                     </div>
@@ -38,4 +38,10 @@ class Halls extends Component {
 }
 
 
-export default Halls;
+const mapStateToProps = (state) => state.halls;
+const mapDispatchToProps = (dispatch) => ({
+    loadHalls: () => dispatch(loadHalls())
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Halls);

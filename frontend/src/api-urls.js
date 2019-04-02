@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const BASE_URL = 'http://localhost:8000/api/v1';
 const MOVIES_URL = '/movies/';
+const HALLS_URL = '/hall/';
 const CATEGORIES_URL = '/category/';
 const LOGIN_URL = '/login/';
 const REGISTER_URL = '/register/';
@@ -14,6 +15,6 @@ const instance = axios.create({
 });
 
 export {MOVIES_URL, CATEGORIES_URL, BASE_URL, LOGIN_URL,
-    REGISTER_URL, REGISTER_ACTIVATE_URL, USERS_URL, TOKEN_LOGIN_URL};
+    REGISTER_URL, REGISTER_ACTIVATE_URL, USERS_URL, TOKEN_LOGIN_URL, HALLS_URL};
 
 export default instance;
