@@ -44,7 +44,6 @@ class Login extends Component {
     };
 
     showErrors = (name) => {
-        console.log("huinya");
         if(this.props.errors && this.props.errors[name]) {
             return this.props.errors[name].map((error, index) => <p className="text-danger" key={index}>{error}</p>);
         }
