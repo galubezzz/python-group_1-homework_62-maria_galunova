@@ -28,6 +28,7 @@ export const login = (username, password) => {
         return axios.post(LOGIN_URL, {username, password}).then(response => {
             console.log(response);
             localStorage.setItem('auth-token', response.data.token);
+            localStorage.setItem('username', response.data.username);
             // отсюда вернётся действие из loginSuccess()
             return dispatch(loginSuccess(response.data));
         }).catch(error => {
