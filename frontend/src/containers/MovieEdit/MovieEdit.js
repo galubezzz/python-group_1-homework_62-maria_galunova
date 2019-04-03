@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react'
-import axios from "axios";
 import MovieForm from "../../components/MovieForm/MovieForm";
 import {loadMovie, MOVIE_EDIT_SUCCESS, saveMovie} from "../../store/actions/movie-edit";
 import {connect} from "react-redux";
@@ -11,14 +10,6 @@ class MovieEdit extends Component {
         this.props.loadMovie(this.props.match.params.id);
     }
 
-    // вывод сообщение об ошибке
-    showErrorAlert = (error) => {
-        this.setState(prevState => {
-            let newState = {...prevState};
-            newState.alert = {type: 'danger', message: `Movie was not added!`};
-            return newState;
-        });
-    };
 
     // сборка данных для запроса
     gatherFormData = (movie) => {
