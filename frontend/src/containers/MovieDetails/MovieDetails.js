@@ -47,6 +47,7 @@ class MovieDetails extends Component {
     render() {
 
         if (!this.state.movie || !this.state.shows) return null;
+        const categotries = this.state.movie.category.map(category => category.name);
         return (
             <div className="card m-3" style={{"width": "30rem"}}>
                 <img src={this.state.movie.poster} className="card-img-top" alt="..."/>
@@ -55,7 +56,7 @@ class MovieDetails extends Component {
                     <h6 className="card-subtitle mb-2 text-muted">Дата начала показа: {this.state.movie.release_date}</h6>
                     <h6 className="card-subtitle mb-2 text-muted">Дата окончания показа: {this.state.movie.finish_date}</h6>
                     <p className="card-text">Описание: {this.state.movie.description}</p>
-                    <p className="card-text">Жанр: {this.state.movie.сategory}</p>
+                    <p className="card-text">Жанр: {categotries}</p>
                     <Schedule schedule={this.state.shows}/>
                 </div>
             </div>
