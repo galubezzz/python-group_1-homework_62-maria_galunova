@@ -1,40 +1,14 @@
 import React, {Component, Fragment} from 'react'
 import axios from "axios";
-//import {MOVIES_URL} from "../../api-urls";
 import MovieForm from "../../components/MovieForm/MovieForm";
+import {loadMovie, MOVIE_EDIT_SUCCESS, saveMovie} from "../../store/actions/movie-edit";
+import {connect} from "react-redux";
 
 
 class MovieEdit extends Component {
-    state = {
-        // исходные данные фильма, загруженные из API.
-        movie: null,
-
-        // сообщение об ошибке
-        alert: null,
-
-        errors: {}
-    };
 
     componentDidMount() {
-        // match.params - переменные из пути к этому компоненту
-        // match.params.id - значение переменной, обозначенной :id в свойстве path Route-а.
-        const MOVIES_URL = 'http://localhost:8000/api/v1/movies/';
-        axios.get(MOVIES_URL + this.props.match.params.id)
-            .then(response => {
-                const movie = response.data;
-                console.log(movie);
-                this.setState(prevState => {
-                    const newState = {...prevState};
-                    newState.movie = movie;
-                    newState.movie.category = movie.category.map(category => category.id);
-                    return newState;
-                });
-            })
-            .catch(error => {
-                console.log(error);
-                console.log(error.response);
-
-            });
+        this.props.loadMovie(this.props.match.params.id);
     }
 
     // вывод сообщение об ошибке
@@ -66,48 +40,35 @@ class MovieEdit extends Component {
 
     // обработчик отправки формы
     formSubmitted = (movie) => {
-        // сборка данных для запроса
-        const formData = this.gatherFormData(movie);
-        const MOVIES_URL = 'http://localhost:8000/api/v1/movies/';
-        // отправка запроса
-        return axios.put(MOVIES_URL + this.props.match.params.id + '/', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'Token ' + localStorage.getItem('auth-token')
+       const {auth} = this.props;
+       console.log(auth.token);
+        return this.props.saveMovie(movie, auth.token).then(result => {
+            if(result.type === MOVIE_EDIT_SUCCESS) {
+                this.props.history.push('/movies/' + result.movie.id);
             }
-
-        })
-            .then(response => {
-                // при успешном создании response.data содержит данные фильма
-                const movie = response.data;
-                console.log(movie);
-                // если всё успешно, переходим на просмотр страницы фильма с id,
-                // указанным в ответе
-                this.props.history.replace('/movies/' + movie.id);
-            })
-            .catch(error => {
-                console.log(error);
-                // error.response - ответ с сервера
-                // при ошибке 400 в ответе с сервера содержатся ошибки валидации
-                // пока что выводим их в консоль
-                console.log(error.response);
-                this.showErrorAlert(error.response);
-                this.setState({
-                    ...this.state,
-                    errors: error.response.data
-
-                });
-            });
+        });
     };
 
     render() {
-        const {alert, movie} = this.state;
+        const {movie, errors} = this.props.movieEdit;
         return <Fragment>
-            {alert ? <div className={"mb-2 alert alert-" + alert.type}>{alert.message}</div> : null}
-            {movie ? <MovieForm onSubmit={this.formSubmitted} movie={movie} errors = {this.state.errors}/> : null}
+            {movie ? <MovieForm onSubmit={this.formSubmitted} movie={movie} errors = {errors}/> : null}
         </Fragment>
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        movieEdit: state.movieEdit,
+        auth: state.auth  // auth нужен, чтобы получить из него токен для запроса
+    }
+};
+const mapDispatchProps = dispatch => {
+    return {
+        loadMovie: (id) => dispatch(loadMovie(id)),  // прокидываем id в экшен-крейтор loadMovie.
+        saveMovie: (movie, token) => dispatch(saveMovie(movie, token))
+    }
+};
 
-export default MovieEdit
+
+export default connect(mapStateToProps, mapDispatchProps)(MovieEdit);
