@@ -61,7 +61,7 @@ export const saveHall = (hall, authToken) => {
         return axios.put(url, formData, options).then(response => {
             console.log(response);
             // и здесь
-            return dispatch({type: HALL_EDIT_SUCCESS, movie: response.data});
+            return dispatch({type: HALL_EDIT_SUCCESS, hall: response.data});
         }).catch(error => {
             console.log(error);
             console.log(error.response);

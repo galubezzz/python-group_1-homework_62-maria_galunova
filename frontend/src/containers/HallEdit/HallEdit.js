@@ -1,40 +1,10 @@
 import React, {Component} from 'react';
 import {loadHall, HALL_EDIT_SUCCESS, saveHall} from "../../store/actions/hall-edit";
 import {connect} from "react-redux";
+import HallForm from "../../components/HallForm/HallForm";
 
 
 class HallEdit extends Component {
-    state = {
-        // фильм, который мы редактируем
-        hall: {
-            name: "",
-        },
-
-        // сообщение об ошибке
-        alert: null,
-
-        // индикатор отключения кнопки submit, если запрос выполняется
-        submitDisabled: false,
-
-        errors: {}
-    };
-    // функция, обновляющая поля в this.state.task
-    updateHallState = (fieldName, value) => {
-        this.setState(prevState => {
-            let newState = {...prevState};
-            let hall = {...prevState.hall};
-            hall[fieldName] = value;
-            newState.hall = hall;
-            return newState;
-        });
-    };
-    // обработчик ввода в поля ввода
-    inputChanged = (event) => {
-        const value = event.target.value;
-        const fieldName = event.target.name;
-        this.updateHallState(fieldName, value);
-    };
-
 
     // обработчик отправки формы
     formSubmitted = (hall) => {
@@ -42,6 +12,7 @@ class HallEdit extends Component {
         console.log(auth.token);
         return this.props.saveHall(hall, auth.token).then(result => {
             if(result.type === HALL_EDIT_SUCCESS) {
+                console.log(result);
                 this.props.history.push('/halls/' + result.hall.id);
             }
         });
@@ -60,20 +31,12 @@ class HallEdit extends Component {
 
     render() {
         // распаковка данных, чтобы было удобнее к ним обращаться
-        const name = this.props.hallEdit && this.props.hallEdit.hall && this.props.hallEdit.hall.name || 'Nothing yet';
-        console.log(name);
+        const hall = this.props.hallEdit.hall;
+        const errors = this.props.hallEdit.errors;
+        console.log(hall);
 
         return <div>
-            <form onSubmit={this.formSubmitted}>
-                {this.showErrors('non_field_errors')}
-                <div className="form-group">
-                    <label className="font-weight-bold">Название</label>
-                    <input type="text" className="form-control" name="name" value={name} onChange={this.inputChanged}/>
-                    {this.showErrors('name')}
-                </div>
-                <button disabled={this.props.loading} type="submit"
-                        className="btn btn-primary">Сохранить</button>
-            </form>
+            {hall ? <HallForm onSubmit={this.formSubmitted} hall={hall} errors={errors}/> : null}
         </div>;
     };
 }
