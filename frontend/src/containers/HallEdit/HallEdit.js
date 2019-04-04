@@ -59,10 +59,9 @@ class HallEdit extends Component {
     };
 
     render() {
-        // распаковка данных фильма, чтобы было удобнее к ним обращаться
-        const name = this.props.hallEdit.hall || '';
+        // распаковка данных, чтобы было удобнее к ним обращаться
+        const name = this.props.hallEdit && this.props.hallEdit.hall && this.props.hallEdit.hall.name || 'Nothing yet';
         console.log(name);
-        // создание разметки для алерта, если он есть
 
         return <div>
             <form onSubmit={this.formSubmitted}>
@@ -91,5 +90,5 @@ const mapDispatchProps = dispatch => {
         loadHall: (id) => dispatch(loadHall(id)),
         saveHall: (hall, token) => dispatch(saveHall(hall, token))
     }
-}
+};
 export default connect(mapStateToProps, mapDispatchProps)(HallEdit);
