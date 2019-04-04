@@ -22,13 +22,6 @@ class HallEdit extends Component {
        this.props.loadHall(this.props.match.params.id);
     }
 
-    showErrors = (name) => {
-        if (this.props.errors && this.props.errors[name]) {
-            return this.props.errors[name].map((error, index) => <p className="text-danger" key={index}>{error}</p>);
-        }
-        return null;
-    };
-
     render() {
         // распаковка данных, чтобы было удобнее к ним обращаться
         const hall = this.props.hallEdit.hall;

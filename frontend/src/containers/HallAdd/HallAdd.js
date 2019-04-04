@@ -1,118 +1,48 @@
-import React, {Component} from 'react';
-
-import axios from 'axios';
+import React, {Component, Fragment} from 'react';
+import HallForm from "../../components/HallForm/HallForm";
+import {HALL_ADD_SUCCESS, addHall} from "../../store/actions/hall-add";
+import connect from "react-redux/es/connect/connect";
 
 
 class HallAdd extends Component {
-    state = {
-        // фильм, который мы редактируем
-        hall: {
-            name: "",
-        },
-
-        // сообщение об ошибке
-        alert: null,
-
-        // индикатор отключения кнопки submit, если запрос выполняется
-        submitDisabled: false,
-
-        errors: {}
-    };
-
-
-    // функция, обновляющая поля в this.state.task
-    updateHallState = (fieldName, value) => {
-        this.setState(prevState => {
-            let newState = {...prevState};
-            let hall = {...prevState.hall};
-            hall[fieldName] = value;
-            newState.hall = hall;
-            return newState;
-        });
-    };
-    // обработчик ввода в поля ввода
-    inputChanged = (event) => {
-        const value = event.target.value;
-        const fieldName = event.target.name;
-        this.updateHallState(fieldName, value);
-    };
 
 
     // обработчик отправки формы
-    formSubmitted = (event) => {
-        event.preventDefault();
+    formSubmitted = (hall) => {
 
-        // блокировка отправки формы на время выполнения запроса
-        this.setState(prevState => {
-            let newState = {...prevState};
-            newState.submitDisabled = true;
-            return newState;
-        });
-        const HALLS_URL = 'http://localhost:8000/api/v1/hall/';
-        // отправка запроса
-
-        axios.post(HALLS_URL, this.state.hall, {
-            headers: {
-                'Authorization': 'Token ' + localStorage.getItem('auth-token')
-            }
-        }).then(response => {
-                console.log(response.data);
-                if (response.status === 201) return response.data;
-                throw new Error('Hall was not added!');
-            })
-            // если всё успешно, переходим на просмотр страницы фильма с id,
-            // указанным в ответе
-            .then(hall => this.props.history.replace('/halls/'))
-            .catch(error => {
-                console.log(error);
-                this.setState(prevState => {
-                    let newState = {...prevState};
-                    newState.alert = {type: 'danger', message: `Hall was not added!`};
-                    newState.submitDisabled = false;
-                    return newState;
-                });
-                this.setState({
-                    ...this.state,
-                    errors: error.response.data
-                });
-            });
-    };
-
-    showErrors = (name) => {
-        if (this.state.errors && this.state.errors[name]) {
-            return this.state.errors[name].map((error, index) => <p className="text-danger" key={index}>{error}</p>);
+    // отправка запроса
+    // распаковываем auth из proms
+    const {auth} = this.props;
+    console.log(auth.token, 'auth.token HallAdd');
+    return this.props.addHall(hall, auth.token).then(result => {
+        // если результат запроса удачный - переходим на страницу добавленного зала
+        if(result.type === HALL_ADD_SUCCESS) {
+            console.log(result.hall.id, 'result.hall.id');
+            this.props.history.push('/halls/' + result.hall.id);
         }
-        return null;
+    })
     };
-
 
     render() {
-        // распаковка данных фильма, чтобы было удобнее к ним обращаться
-        const {name} = this.state.hall;
-
-        // создание разметки для алерта, если он есть
-        let alert = null;
-        if (this.state.alert) {
-            alert = <div className={"alert alert-" + this.state.alert.type}>{this.state.alert.message}</div>
-        }
-
-
-        return <div className="mt-3">
-            {alert}
-            <form onSubmit={this.formSubmitted}>
-                {this.showErrors('non_field_errors')}
-                <div className="form-group">
-                    <label className="font-weight-bold">Название</label>
-                    <input type="text" className="form-control" name="name" value={name} onChange={this.inputChanged}/>
-                    {this.showErrors('name')}
-                </div>
-                <button disabled={this.state.submitDisabled} type="submit"
-                        className="btn btn-primary">Сохранить
-                </button>
-            </form>
-        </div>;
-    };
+        const {errors} = this.props.hallAdd;
+        return <Fragment>
+            <HallForm errors={errors} onSubmit={this.formSubmitted}/>
+        </Fragment>
+    }
 }
 
 
-export default HallAdd;
+const mapStateToProps = state => {
+    return {
+        // hallAdd - идет в root
+        hallAdd: state.hallAdd,
+        auth: state.auth  // auth нужен, чтобы получить из него токен для запроса
+    }
+};
+const mapDispatchProps = dispatch => {
+    return {
+        addHall: (hall, token) => dispatch(addHall(hall, token))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchProps)(HallAdd);
