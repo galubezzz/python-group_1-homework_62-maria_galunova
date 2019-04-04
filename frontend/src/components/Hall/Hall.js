@@ -41,8 +41,6 @@ const mapStateToProps = state => {
     }
 };
 
-// loadHall: - передается из props, используется в componentDidMount
-// loadHall() - это вызов action из actions/hall-detail
 const mapDispatchToProps = (dispatch) => ({
     deleteHall: (hall_id, token) => dispatch(deleteHall(hall_id, token))
 });
