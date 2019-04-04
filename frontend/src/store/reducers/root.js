@@ -9,6 +9,7 @@ import hallDetailReducer from "./hall-details";
 import hallDeleteReducer from "./hall-delete";
 import hallAddReducer from "./hall-add";
 import movieDeleteReducer from "./movie-delete";
+import movieDetailsReducer from "./movie-details";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     hallDelete: hallDeleteReducer,
     hallAdd: hallAddReducer,
     movieDelete: movieDeleteReducer,
+    movieDetails: movieDetailsReducer,
 });
 
 export default rootReducer;

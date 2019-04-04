@@ -27,7 +27,7 @@ class Movies extends Component {
             <div className='row'>
                 {this.props.movies.map(movie => {
                     return <div key={movie.id}>
-                        <Movie movie={movie} updateBoard={this.getMovies.bind(this)} />
+                        <Movie movie={movie} updateBoard={this.props.loadMovies.bind(this)} />
                     </div>
                 })}
             </div>

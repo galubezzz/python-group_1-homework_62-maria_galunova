@@ -1,67 +1,68 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import {NavLink} from 'react-router-dom';
 import Schedule from "../../components/Schedule/Schedule";
+import {loadMovie, loadShows} from "../../store/actions/movie-details";
+import connect from "react-redux/es/connect/connect";
+import axios from "axios";
+import {CATEGORIES_URL} from "../../api-urls";
 
 class MovieDetails extends Component {
 
     state = {
-        movie: null,
-        shows: null,
+        category: []
     };
 
     componentDidMount() {
-        // match - атрибут, передаваемый роутером, содержащий путь к этому компоненту
-        const match = this.props.match;
-        const MOVIES_URL = 'http://127.0.0.1:8000/api/v1/movies/';
-        let current_date = new Date();
-        current_date = current_date.toISOString().slice(0, 10);
-        console.log(current_date, 'current_date');
-
-        let next_date = new Date();
-        next_date.setDate(next_date.getDate() + 3);
-        next_date = next_date.toISOString().slice(0, 10);
-        console.log(next_date, 'next_date');
-
-        // match.params - переменные из пути (:id)
-        // match.params.id - значение переменной, обозначенной :id в свойстве path Route-а.
-        axios.get(MOVIES_URL + match.params.id)
+        this.props.loadMovie(this.props.match.params.id);
+        this.props.loadShows(this.props.match.params.id);
+        axios.get(CATEGORIES_URL)
             .then(response => {
-                console.log(response.data);
-                return response.data;
+                const category = response.data;
+                console.log(category);
+                // и сохраняем их в state
+                this.setState(prevState => {
+                    let newState = {...prevState};
+                    newState.category = category;
+                    return newState;
+                });
             })
-            .then(movie => this.setState({movie}))
-            .catch(error => console.log(error));
-
-        const SHOW_URL = "http://127.0.0.1:8000/api/v1/show/";
-        axios.get(SHOW_URL + '?movie_id=' + match.params.id + '&min_start_date=' + current_date + '&max_start_date=' + next_date)
-            .then(response => {
-                console.log(response.data);
-                return response.data;
-            })
-            .then(shows =>
-            {this.setState({shows: shows})})
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log(error);
+                console.log(error.response)
+            });
     }
 
     render() {
 
-        if (!this.state.movie || !this.state.shows) return null;
-        const categotries = this.state.movie.category.map(category => category.name);
+        if (!this.props.movieDetails.movie || !this.props.movieDetails.shows) return null;
+        const categotries = this.props.movieDetails.movie.category.map(category => category.name);
+        const movie = {...this.props.movieDetails.movie};
         return (
             <div className="card m-3" style={{"width": "30rem"}}>
-                <img src={this.state.movie.poster} className="card-img-top" alt="..."/>
+                <img src={movie.poster} className="card-img-top" alt="..."/>
                 <div className="card-body">
-                    <h5 className="card-title">{this.state.movie.name}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">Дата начала показа: {this.state.movie.release_date}</h6>
-                    <h6 className="card-subtitle mb-2 text-muted">Дата окончания показа: {this.state.movie.finish_date}</h6>
-                    <p className="card-text">Описание: {this.state.movie.description}</p>
+                    <h5 className="card-title">{movie.name}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">Дата начала показа: {movie.release_date}</h6>
+                    <h6 className="card-subtitle mb-2 text-muted">Дата окончания показа: {movie.finish_date}</h6>
+                    <p className="card-text">Описание: {movie.description}</p>
                     <p className="card-text">Жанр: {categotries}</p>
-                    <Schedule schedule={this.state.shows}/>
+                    <Schedule schedule={this.props.movieDetails.shows}/>
                 </div>
             </div>
         )
     }
 }
 
-export default MovieDetails;
+const mapStateToProps = state => {
+    return {
+        movieDetails: state.movieDetails,
+        auth: state.auth
+    }
+};
+
+const mapDispatchProps = dispatch => {
+    return {
+        loadMovie: (id) => dispatch(loadMovie(id)),
+        loadShows: (id) => dispatch(loadShows(id)),
+    }
+};
+export default connect(mapStateToProps, mapDispatchProps)(MovieDetails);
