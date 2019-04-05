@@ -150,3 +150,31 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = ("url", "id", "code", "show_url", "show", "seats", "status", "created_date", "renew_date")
+
+class RegistrationTokenSerializer(serializers.Serializer):
+    token = serializers.UUIDField(write_only=True)
+
+    # валидация поля token.
+    # теперь проверки на существование и срок действия токена
+    # выполняются здесь вместо представления UserActivateView.
+    # метод называется validate_token, потому что сериализаторы DRF для
+    # дополнительной валидации своих полей ищут методы с именами вида
+    # validate_field, где field - имя этого поля в сериализаторе.
+    def validate_token(self, token_value):
+        try:
+            token = RegistrationToken.objects.get(token=token_value)
+            if token.is_expired():
+                raise ValidationError("Token expired")
+            return token
+        except RegistrationToken.DoesNotExist:
+            raise ValidationError("Token does not exist or already used")
+
+
+class AuthTokenSerializer(serializers.Serializer):
+    token = serializers.CharField(write_only=True)
+
+    def validate_token(self, token):
+        try:
+            return Token.objects.get(key=token)
+        except Token.DoesNotExist:
+            raise ValidationError("Invalid credentials")

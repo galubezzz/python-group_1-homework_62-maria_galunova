@@ -1,15 +1,27 @@
 import React from 'react'
 import {Redirect, Route} from 'react-router'
 
+// для передачи данных из state в AuthRoute его нужно завернуть в коннектор.
+import {connect} from "react-redux";
+
+
 const AuthRoute = (props) => {
-    if(localStorage.getItem('auth-token')) {
-        return <Route {...props} />
-    } else {
-        return <Redirect to={{
-            pathname: "/login",
-            state: {next: props.path}
-        }}/>
+    if(props.app.loading) {
+        return <p>Loading, please wait.</p>
     }
+    if(props.auth.user_id) {
+        return <Route {...props} />
+    }
+    return <Redirect to={{
+        pathname: "/login",
+        state: {next: props.location}
+    }}/>
 };
 
-export default AuthRoute;
+
+// вытаскиваем данные об аутентификации из state
+const mapStateToProps = state => ({auth: state.auth, app: state.app});
+// никаких дополнительных действий здесь не нужно
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthRoute);

@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {NavLink} from 'react-router-dom';
-import axios from 'axios';
 import { withRouter } from "react-router";
 import {deleteMovie, MOVIE_DELETE_SUCCESS} from "../../store/actions/movie-delete";
 import connect from "react-redux/es/connect/connect";
-import {deleteHall} from "../../store/actions/hall-delete";
+
 
 class Movie extends Component {
 

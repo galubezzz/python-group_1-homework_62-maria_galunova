@@ -10,10 +10,13 @@ import hallDeleteReducer from "./hall-delete";
 import hallAddReducer from "./hall-add";
 import movieDeleteReducer from "./movie-delete";
 import movieDetailsReducer from "./movie-details";
+import movieAddReducer from "./movie-add";
+import tokenLoginReducer from "./app";
 
 const rootReducer = combineReducers({
     login: loginReducer,
     auth: authReducer,
+    app: tokenLoginReducer,
     movies: movieListReducer,
     halls: hallsReducer,
     movieEdit: movieEditReducer,
@@ -23,6 +26,8 @@ const rootReducer = combineReducers({
     hallAdd: hallAddReducer,
     movieDelete: movieDeleteReducer,
     movieDetails: movieDetailsReducer,
+    movieAdd: movieAddReducer,
+
 });
 
 export default rootReducer;

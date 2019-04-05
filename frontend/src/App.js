@@ -16,9 +16,15 @@ import './App.css';
 import AuthRoute from "./components/AuthRoute/AuthRoute";
 import Register from "./containers/Register/Register";
 import Account from "./containers/Account/Account";
+import {tokenLogin} from "./store/actions/token-login"
+import {connect} from "react-redux";
 
 
 class App extends Component {
+
+    componentDidMount() {
+        this.props.tokenLogin();
+    }
 
     render() {
         return (
@@ -38,6 +44,7 @@ class App extends Component {
                             <Route path="/logout" component={Logout}/>
                             <Route path="/register" component={Register}/>
                             <Route path="/account" component={Account}/>
+
                         </Switch>
                     </Layout>
                 </BrowserRouter>
@@ -46,4 +53,11 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapStateToProps = state => state.app;
+const mapDispatchToProps = dispatch => ({
+    tokenLogin: () => dispatch(tokenLogin())
+});
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
