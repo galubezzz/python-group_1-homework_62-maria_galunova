@@ -9,7 +9,7 @@ const AuthRoute = (props) => {
     if(props.app.loading) {
         return <p>Loading, please wait.</p>
     }
-    if(props.auth.user_id) {
+    if(props.auth.username) {
         return <Route {...props} />
     }
     return <Redirect to={{
